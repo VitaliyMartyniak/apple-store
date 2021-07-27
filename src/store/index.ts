@@ -1,12 +1,8 @@
 import { createStore } from 'vuex'
+import productsModule from '@/store/modules/products'
 
 export default createStore({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
   modules: {
+    products: productsModule
   }
 })

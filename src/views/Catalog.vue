@@ -1,7 +1,7 @@
 <template>
-  <div class="catalog">
-    <h1>This is {{product}} Catalog</h1>
-  </div>
+<!--  <div class="catalog">-->
+<!--    <h1>This is {{product}} Catalog</h1>-->
+<!--  </div>-->
 
   <CatalogOptions />
 
@@ -36,3 +36,10 @@ export default class Catalog extends Vue {
   // msg!: string
 }
 </script>
+
+<style lang="scss" scoped>
+  .main {
+    max-width: 1400px;
+    display: flex;
+  }
+</style>

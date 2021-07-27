@@ -1,5 +1,5 @@
 <template>
-  <div class='products'>
+  <div class='products' v-if="products">
     <ProductCard
       v-for='product of products'
       :key='product.id'
@@ -47,44 +47,23 @@ import ProductCard from '@/components/ProductCard.vue'
 })
 export default class Products extends Vue {
   productType!: string
-  products = [
-    {
-      model: 'iPhone 11 Pro Max',
-      color: 'Midnight Green',
-      memory: 64,
-      hasTwoSim: 'no',
-      condition: 'new',
-      price: 1249,
-      photo: '11pro-green',
-      countInCart: 1,
-      id: '1'
-    },
-    {
-      model: 'iPhone 11 Pro Max',
-      color: 'Space Gray',
-      memory: 256,
-      hasTwoSim: 'yes',
-      condition: 'used',
-      price: 1299,
-      photo: '11pro-space',
-      countInCart: 1,
-      id: '2'
-    },
-    {
-      model: 'iPhone 11 Pro Max',
-      color: 'Silver',
-      memory: 256,
-      hasTwoSim: 'no',
-      condition: 'used',
-      price: 1199,
-      photo: '11pro-silver',
-      countInCart: 1,
-      id: '3'
-    }
-  ]
 
-  getProductPhoto (product: any): string {
-    return '@/assets/img/' + this.productType + '/' + product.photo + '.jpg'
+  mounted (): void {
+    console.log('store', this.$store.state.products.items)
+  }
+
+  get products (): any {
+    return this.$store.state.products.items
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.products {
+  width: 75%;
+  height: 100%;
+  margin-left: auto;
+  display: flex;
+  flex-wrap: wrap;
+}
+</style>
