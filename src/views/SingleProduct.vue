@@ -3,27 +3,53 @@
     <div class="item__photo">
       <img :src="require(`@/assets/img/${productType}/${product.photo}.jpg`)" alt="{{product.model}}"/>
     </div>
-<!--    <div class="item__data">-->
-<!--      <p class="item__title">Apple Watch Series {{product.generation}} {{product.size}}mm-->
-<!--        {{product.color}} with {{product.strapColor}} {{product.strapSeries}}</p>-->
-<!--      <ul class="menu">Parameters-->
-<!--        <li class="menu__item"><span class="item__parameter">Generation:</span>Apple Watch Series {{product.generation}}</li>-->
-<!--        <li class="menu__item"><span class="item__parameter">Model:</span>{{product.model}}</li>-->
-<!--        <li class="menu__item"><span class="item__parameter">Size:</span>{{product.size}}mm</li>-->
-<!--        <li class="menu__item"><span class="item__parameter">Color:</span> {{product.color}}</li>-->
-<!--        <li class="menu__item"><span class="item__parameter">Strap Series</span> {{product.strapSeries}}</li>-->
-<!--        <li class="menu__item"><span class="item__parameter">Strap Color</span> {{product.strapColor}}</li>-->
-<!--        <li class="menu__item"><span class="item__parameter">Price:</span> {{product.price}} $</li>-->
-<!--      </ul>-->
-<!--      <button class="btn" (click)="addItem(product)">Add to Cart</button>-->
-<!--    </div>-->
+    <div class="item__data">
+      <div v-if="productType === 'iphone'">
+        <p class="item__title"><span v-if="product.condition === 'used'">used</span> {{product.model}} {{product.memory}}GB
+          <span v-if="product.hasTwoSim === 'yes'">Dual SIM</span> ({{product.color}})</p>
+        <ul class="menu">Parameters
+          <li class="menu__item"><span class="item__parameter">Model:</span> {{product.model}}</li>
+          <li class="menu__item"><span class="item__parameter">Memory:</span> {{product.memory}}GB</li>
+          <li class="menu__item"><span class="item__parameter">Color:</span> {{product.color}}</li>
+          <li class="menu__item"><span class="item__parameter">Has 2 SIM:</span> {{product.hasTwoSim}}</li>
+          <li class="menu__item"><span class="item__parameter">Condition:</span> {{product.condition}}</li>
+          <li class="menu__item"><span class="item__parameter">Price:</span> {{product.price}} $</li>
+        </ul>
+      </div>
+      <div v-if="productType === 'mac'">
+        <p class="item__title">{{product.diagonal}} {{product.model}} {{product.memory}}
+          <span v-if="product.hasTouchBar === 'yes'">with Touch Bar</span> ({{product.color}})</p>
+        <ul class="menu">Parameters
+          <li class="menu__item"><span class="item__parameter">Model:</span> {{product.model}}</li>
+          <li class="menu__item"><span class="item__parameter">Diagonal:</span> {{product.diagonal}}</li>
+          <li class="menu__item"><span class="item__parameter">Memory:</span> {{product.memory}}</li>
+          <li class="menu__item"><span class="item__parameter">Color:</span> {{product.color}}</li>
+          <li class="menu__item"><span class="item__parameter">Has Touch Bar:</span> {{product.hasTouchBar}}</li>
+          <li class="menu__item"><span class="item__parameter">Price:</span> {{product.price}} $</li>
+        </ul>
+      </div>
+      <div v-if="productType === 'watch'">
+        <p class="item__title">Apple Watch Series {{product.generation}} {{product.size}}mm
+          {{product.color}} with {{product.strapColor}} {{product.strapSeries}}</p>
+        <ul class="menu">Parameters
+          <li class="menu__item"><span class="item__parameter">Generation:</span>Apple Watch Series {{product.generation}}</li>
+          <li class="menu__item"><span class="item__parameter">Model:</span>{{product.model}}</li>
+          <li class="menu__item"><span class="item__parameter">Size:</span>{{product.size}}mm</li>
+          <li class="menu__item"><span class="item__parameter">Color:</span> {{product.color}}</li>
+          <li class="menu__item"><span class="item__parameter">Strap Series</span> {{product.strapSeries}}</li>
+          <li class="menu__item"><span class="item__parameter">Strap Color</span> {{product.strapColor}}</li>
+          <li class="menu__item"><span class="item__parameter">Price:</span> {{product.price}} $</li>
+        </ul>
+      </div>
+      <button class="btn" @click="addItem(product)">Add to Cart</button>
+    </div>
   </div>
 </template>
 
 <script lang='ts'>
 import { Vue } from 'vue-class-component'
 
-export default class IphoneProductCard extends Vue {
+export default class SingleProduct extends Vue {
   get productType (): string | string[] {
     return this.$route.params.productType
   }
@@ -44,52 +70,65 @@ export default class IphoneProductCard extends Vue {
 
 <style lang="scss" scoped>
 .item {
+  max-width: 800px;
+  margin: 0 auto;
   display: flex;
-  flex-direction: column;
-  width: 31%;
   background-color: var(--light-color);
-  text-align: center;
-  padding: 0 20px 20px;
-  cursor: pointer;
-  transition: box-shadow .2s;
-  margin-bottom: 20px;
-  margin-left: 2.3%;
 
-  &__photo {
-    display: flex;
-    justify-content: center;
-    margin-top: 5px;
-    margin-bottom: 20px;
+  &__data {
+    width: 40%;
   }
 
-  &__description {
-    height: auto;
-    width: 80%;
-    margin: 0 auto auto;
+  &__title {
+    width: 100%;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 40px 0 20px;
   }
 
-  &__price {
-    margin: 10px 0;
-  }
-
-  &:hover {
-    box-shadow: 0 0 15px -5px rgba(0,0,0,0.75);
+  &__parameter {
+    font-weight: bold;
   }
 }
 
-hr {
-  margin-top: 10px;
+img {
+  height: 400px;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    font-weight: normal;
+    margin: 10px 0 0;
+  }
 }
 
 .btn {
   width: 100%;
   padding: 10px 0;
+  margin-top: 20px;
   font-size: 16px;
   display: inline-block;
   background-color: var(--detail-color);
 
   &:hover {
     background-color: #2456ff;
+  }
+}
+
+@media (max-width: 767px) {
+  img {
+    height: 300px;
+  }
+
+  .item__data {
+    margin-right: 20px;
+    margin-bottom: 30px;
   }
 }
 </style>

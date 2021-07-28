@@ -41,7 +41,7 @@ import { Options, Vue } from 'vue-class-component'
     product: Object
   }
 })
-export default class IphoneProductCard extends Vue {
+export default class ProductCard extends Vue {
   productType!: string
   product!: any
 }
