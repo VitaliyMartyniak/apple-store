@@ -12,7 +12,7 @@ const routes: Array<RouteRecordRaw> = [
         redirect: '/catalog/iphone'
       },
       {
-        path: '/catalog/:product',
+        path: '/catalog/:productType',
         name: 'Catalog',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
@@ -20,7 +20,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import(/* webpackChunkName: "catalog" */ '../views/Catalog.vue')
       },
       {
-        path: '/catalog/:product/:id',
+        path: '/catalog/:productType/:id',
         name: 'SingleProduct',
         component: () => import(/* webpackChunkName: "singleProduct" */ '../views/SingleProduct.vue')
       }

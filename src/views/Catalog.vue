@@ -8,7 +8,9 @@
   <div class="main">
     <ProductFilters />
 
-    <Products :productType="product" />
+    <Products
+      :productType="productType"
+    />
   </div>
 </template>
 
@@ -30,8 +32,8 @@ import Products from '@/components/Products.vue'
   // }
 })
 export default class Catalog extends Vue {
-  get product (): string | string[] {
-    return this.$route.params.product
+  get productType (): string | string[] {
+    return this.$route.params.productType
   }
   // msg!: string
 }

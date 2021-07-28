@@ -1,7 +1,7 @@
 <template>
   <div class='item'>
     <div class='item__photo'>
-      <router-link :to="{ name: 'SingleProduct', params: { product: productType, id: product.id } }">
+      <router-link :to="{ name: 'SingleProduct', params: { productType, id: product.id } }">
         <img :src="require(`@/assets/img/${productType}/${product.photo}.jpg`)" :alt='product.model'/>
       </router-link>
     </div>

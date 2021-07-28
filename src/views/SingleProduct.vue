@@ -21,17 +21,24 @@
 </template>
 
 <script lang='ts'>
-import { Options, Vue } from 'vue-class-component'
+import { Vue } from 'vue-class-component'
 
-@Options({
-  props: {
-    productType: String,
-    product: Object
-  }
-})
 export default class IphoneProductCard extends Vue {
-  productType!: string
-  product!: any
+  get productType (): string | string[] {
+    return this.$route.params.productType
+  }
+
+  get products (): any {
+    return this.$store.state.products.items
+  }
+
+  get product (): any {
+    return this.products.find((e: any) => e.id === this.$route.params.id)
+  }
+
+  mounted () {
+    this.$store.dispatch('products/getItems', this.productType)
+  }
 }
 </script>
 

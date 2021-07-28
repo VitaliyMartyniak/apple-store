@@ -3,16 +3,16 @@
     <nav class="header__navbar">
       <router-link
         class="header__logo"
-        :to="{ name: 'Catalog', params: { product: 'iphone' } }"
+        :to="{ name: 'Catalog', params: { productType: 'iphone' } }"
       >
         <i class="fab fa-apple" />
       </router-link>
 <!--      <input class="menu-btn" id="menu-btn" type="checkbox" />-->
 <!--      <label class="menu-icon" for="menu-btn"><span class="nav-icon"></span></label>-->
       <section class="header__links">
-        <router-link :to="{ name: 'Catalog', params: { product: 'iphone' } }">iPhone</router-link>
-        <router-link :to="{ name: 'Catalog', params: { product: 'mac' } }">Mac</router-link>
-        <router-link :to="{ name: 'Catalog', params: { product: 'watch' } }">Watch</router-link>
+        <router-link :to="{ name: 'Catalog', params: { productType: 'iphone' } }">iPhone</router-link>
+        <router-link :to="{ name: 'Catalog', params: { productType: 'mac' } }">Mac</router-link>
+        <router-link :to="{ name: 'Catalog', params: { productType: 'watch' } }">Watch</router-link>
 <!--        <a class="feedback" routerLinkActive="active" routerLink="/feedback">Feedbacks</a>-->
       </section>
 <!--      <div class="header__functionals">-->

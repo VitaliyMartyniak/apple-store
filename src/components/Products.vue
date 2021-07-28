@@ -3,8 +3,8 @@
     <ProductCard
       v-for='product of products'
       :key='product.id'
-      :product-type="productType"
       :product="product"
+      :product-type="productType"
     />
   </div>
 <!--  <div class='catalog'>-->
@@ -38,6 +38,7 @@
 <script lang='ts'>
 import { Options, Vue } from 'vue-class-component'
 import ProductCard from '@/components/ProductCard.vue'
+import { Watch } from 'vue-property-decorator'
 
 @Options({
   components: { ProductCard },
@@ -46,11 +47,13 @@ import ProductCard from '@/components/ProductCard.vue'
   }
 })
 export default class Products extends Vue {
-  productType!: string
-
-  mounted (): void {
-    console.log('store', this.$store.state.products.items)
+  @Watch('$route', { immediate: true, deep: true })
+  onUrlChange (newRoute: any) {
+    console.log('newRoute.params', newRoute.params.productType)
+    this.$store.dispatch('products/getItems', newRoute.params.productType)
   }
+
+  productType!: string
 
   get products (): any {
     return this.$store.state.products.items
