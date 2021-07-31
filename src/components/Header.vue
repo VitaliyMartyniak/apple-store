@@ -10,9 +10,18 @@
 <!--      <input class="menu-btn" id="menu-btn" type="checkbox" />-->
 <!--      <label class="menu-icon" for="menu-btn"><span class="nav-icon"></span></label>-->
       <section class="header__links">
-        <router-link :to="{ name: 'Catalog', params: { productType: 'iphone' } }">iPhone</router-link>
-        <router-link :to="{ name: 'Catalog', params: { productType: 'mac' } }">Mac</router-link>
-        <router-link :to="{ name: 'Catalog', params: { productType: 'watch' } }">Watch</router-link>
+        <router-link
+          :to="{ name: 'Catalog', params: { productType: 'iphone' } }"
+          :class="{'active': $route.path.includes('iphone')}"
+        >iPhone</router-link>
+        <router-link
+          :to="{ name: 'Catalog', params: { productType: 'mac' } }"
+          :class="{'active': $route.path.includes('mac')}"
+        >Mac</router-link>
+        <router-link
+          :to="{ name: 'Catalog', params: { productType: 'watch' } }"
+          :class="{'active': $route.path.includes('watch')}"
+        >Watch</router-link>
 <!--        <a class="feedback" routerLinkActive="active" routerLink="/feedback">Feedbacks</a>-->
       </section>
 <!--      <div class="header__functionals">-->
