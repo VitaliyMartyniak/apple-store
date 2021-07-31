@@ -38,7 +38,8 @@
 <script lang='ts'>
 import { Options, Vue } from 'vue-class-component'
 import ProductCard from '@/components/ProductCard.vue'
-import { Watch } from 'vue-property-decorator'
+import { Watch as WatchDecorator } from 'vue-property-decorator'
+import { Iphone, Mac, ProductType, Watch } from '@/types/products'
 
 @Options({
   components: { ProductCard },
@@ -47,15 +48,14 @@ import { Watch } from 'vue-property-decorator'
   }
 })
 export default class Products extends Vue {
-  @Watch('$route', { immediate: true, deep: true })
+  @WatchDecorator('$route', { immediate: true, deep: true })
   onUrlChange (newRoute: any) {
-    console.log('newRoute.params', newRoute.params.productType)
     this.$store.dispatch('products/getItems', newRoute.params.productType)
   }
 
-  productType!: string
+  productType!: ProductType
 
-  get products (): any {
+  get products (): Iphone[] | Mac[] | Watch[] {
     return this.$store.state.products.items
   }
 }

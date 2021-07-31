@@ -19,6 +19,7 @@ import { Options, Vue } from 'vue-class-component'
 import CatalogOptions from '@/components/CatalogOptions.vue'
 import ProductFilters from '@/components/ProductFilters.vue'
 import Products from '@/components/Products.vue'
+// import { ProductType } from '@/types/products'
 
 @Options({
   components: {

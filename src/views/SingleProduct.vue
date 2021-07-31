@@ -48,18 +48,19 @@
 
 <script lang='ts'>
 import { Vue } from 'vue-class-component'
+import { Iphone, Mac, Watch } from '@/types/products'
 
 export default class SingleProduct extends Vue {
   get productType (): string | string[] {
     return this.$route.params.productType
   }
 
-  get products (): any {
+  get products (): Array<Iphone | Mac | Watch> {
     return this.$store.state.products.items
   }
 
-  get product (): any {
-    return this.products.find((e: any) => e.id === this.$route.params.id)
+  get product (): Iphone | Mac | Watch | undefined {
+    return this.products.find((e: Iphone | Mac | Watch) => e.id === this.$route.params.id)
   }
 
   mounted () {

@@ -34,6 +34,7 @@
 
 <script lang='ts'>
 import { Options, Vue } from 'vue-class-component'
+import { Iphone, Mac, ProductType, Watch } from '@/types/products'
 
 @Options({
   props: {
@@ -42,8 +43,8 @@ import { Options, Vue } from 'vue-class-component'
   }
 })
 export default class ProductCard extends Vue {
-  productType!: string
-  product!: any
+  productType!: ProductType
+  product!: Iphone | Mac | Watch
 }
 </script>
 

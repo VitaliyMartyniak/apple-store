@@ -1,15 +1,17 @@
+import { Iphone, Mac, ProductType, Watch } from '@/types/products'
+
 export default {
   namespaced: true,
   state: {
     items: []
   },
   mutations: {
-    setItems (state: any, items: any) {
+    setItems (state: any, items: Iphone[] | Mac[] | Watch[]) {
       state.items = items
     }
   },
   actions: {
-    getItems ({ commit }: any, payload: string) {
+    getItems ({ commit }: any, payload: ProductType) {
       if (payload === 'iphone') {
         commit('setItems', [
           {
@@ -20,7 +22,6 @@ export default {
             condition: 'new',
             price: 1249,
             photo: '11pro-green',
-            countInCart: 1,
             id: '1'
           },
           {
@@ -31,7 +32,6 @@ export default {
             condition: 'used',
             price: 1299,
             photo: '11pro-space',
-            countInCart: 1,
             id: '2'
           },
           {
@@ -42,7 +42,6 @@ export default {
             condition: 'used',
             price: 1199,
             photo: '11pro-silver',
-            countInCart: 1,
             id: '3'
           }
         ])
@@ -56,7 +55,6 @@ export default {
             hasTouchBar: 'no',
             price: 1339,
             photo: 'macbook-13-silver',
-            countInCart: 1,
             id: '60'
           },
           {
@@ -67,7 +65,6 @@ export default {
             hasTouchBar: 'no',
             price: 1795,
             photo: 'macbook-13-space',
-            countInCart: 1,
             id: '61'
           },
           {
@@ -78,7 +75,6 @@ export default {
             hasTouchBar: 'yes',
             price: 2095,
             photo: 'macbook-13-space-touchbar',
-            countInCart: 1,
             id: '62'
           }
         ])
@@ -93,7 +89,6 @@ export default {
             strapColor: 'Black',
             price: 289,
             photo: 'sport-38-space',
-            countInCart: 1,
             id: '78'
           },
           {
@@ -105,7 +100,6 @@ export default {
             strapColor: 'White',
             price: 289,
             photo: 'sport-38-silver',
-            countInCart: 1,
             id: '79'
           },
           {
@@ -117,12 +111,9 @@ export default {
             strapColor: 'Black',
             price: 355,
             photo: 'sport-42-space',
-            countInCart: 1,
             id: '80'
           }
         ])
-      } else {
-        commit('setItems', [])
       }
     }
   }
