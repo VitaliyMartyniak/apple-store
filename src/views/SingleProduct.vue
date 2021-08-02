@@ -66,6 +66,11 @@ export default class SingleProduct extends Vue {
   mounted () {
     this.$store.dispatch('products/getItems', this.productType)
   }
+
+  addItem (product: Iphone | Mac | Watch) {
+    const selectedProduct = { ...product, productType: this.productType }
+    this.$store.dispatch('cart/addProduct', selectedProduct)
+  }
 }
 </script>
 

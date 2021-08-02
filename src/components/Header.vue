@@ -24,20 +24,23 @@
         >Watch</router-link>
 <!--        <a class="feedback" routerLinkActive="active" routerLink="/feedback">Feedbacks</a>-->
       </section>
-<!--      <div class="header__functionals">-->
+      <div class="header__functionals">
 <!--        <input #textFilter class="search-input" type="text" placeholder="I'm looking for... ex.: 'iphone 8'"-->
 <!--               (input)="sendText(textFilter.value)"/>-->
-<!--        <a class="cart__link" routerLink="/cart"><i class="fas fa-shopping-cart icon"></i>-->
-<!--          <span class="cart__counter" *ngIf="cartCounter">{{cartCounter}}</span></a>-->
-<!--      </div>-->
+
+        <CartIcon />
+      </div>
     </nav>
   </header>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component'
+import CartIcon from '@/components/CartIcon.vue'
 
 @Options({
+  components: { CartIcon }
+
   // props: {
   //   msg: String
   // }
@@ -141,32 +144,6 @@ export default class Header extends Vue {
 //  border-radius: 5px;
 //  outline: none;
 //  border: 1px solid #747474;
-//}
-
-//.icon {
-//  font-size: 20px;
-//  margin-left: 40px;
-//  cursor: pointer;
-//  color: var(--dark-color);
-//
-//  &:hover {
-//    color: var(--detail-color);
-//  }
-//}
-
-//.cart__link {
-//  position: relative;
-//}
-
-//.cart__counter {
-//  position: absolute;
-//  top: -10px;
-//  display: inline-block;
-//  font-size: 10px;
-//  background-color: var(--detail-color);
-//  padding: 2px 4px;
-//  border-radius: 5px;
-//  color: var(--light-color);
 //}
 
 //@media (max-width: 767px) {

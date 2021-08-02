@@ -45,6 +45,11 @@ import { Iphone, Mac, ProductType, Watch } from '@/types/products'
 export default class ProductCard extends Vue {
   productType!: ProductType
   product!: Iphone | Mac | Watch
+
+  addItem (product: Iphone | Mac | Watch) {
+    const selectedProduct = { ...product, productType: this.productType }
+    this.$store.dispatch('cart/addProduct', selectedProduct)
+  }
 }
 </script>
 

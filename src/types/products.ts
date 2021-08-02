@@ -8,6 +8,7 @@ export type Iphone = {
   condition: string;
   price: number;
   photo: string;
+  productType?: string,
   countInCart?: number;
   id?: string;
 }
@@ -20,6 +21,7 @@ export type Mac = {
   hasTouchBar: string;
   price: number;
   photo: string;
+  productType?: string,
   countInCart?: number;
   id?: string;
 }
@@ -33,6 +35,7 @@ export type Watch = {
   strapColor: string;
   price: number;
   photo: string;
+  productType?: string,
   countInCart?: number;
   id?: string;
 }
