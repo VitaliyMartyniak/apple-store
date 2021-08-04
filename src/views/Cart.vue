@@ -1,56 +1,59 @@
 <template>
   <p v-if="!cartItems.length">Cart is empty</p>
-<!--  <div class="cart" v-else>-->
+  <div class="cart" v-else>
 
-<!--    <div class="cart__item"-->
-<!--         v-for="item of cartItems"-->
-<!--         :key='item.id'-->
-<!--    >-->
+    <div class="cart__item"
+         v-for="product of cartItems"
+         :key='product.id'
+    >
 
-<!--      <div class="item__photo">-->
-<!--        <img [routerLink]="['/iphone', product.id]"-->
-<!--             *ngIf="product.hasTwoSim" src="../../assets/img/iphone/{{product.photo}}.jpg" alt="{{product.model}}"/>-->
-<!--        <img [routerLink]="['/mac', product.id]"-->
-<!--             *ngIf="product.hasTouchBar" src="../../assets/img/mac/{{product.photo}}.jpg" alt="{{product.model}}"/>-->
-<!--        <img [routerLink]="['/watch', product.id]"-->
-<!--             *ngIf="product.generation" src="../../assets/img/watch/{{product.photo}}.jpg" alt="{{product.model}}"/>-->
-<!--      </div>-->
+      <div class="item__photo">
+        <img
+          :to="{ name: 'SingleProduct', params: { productType: product.productType, id: product.id } }"
+          :src="require(`@/assets/img/${product.productType}/${product.photo}.jpg`)"
+          :alt='product.model'
+        />
+      </div>
 
-<!--      <div class="item__info" >-->
+      <div class="item__info" >
 
-<!--        <p class="item__title" *ngIf="product.hasTwoSim">-->
-<!--          <span *ngIf="product.condition === 'used'">used</span>-->
-<!--          {{product.model}} <span>{{product.memory}}GB-->
-<!--        <span *ngIf="product.hasTwoSim === 'yes'">Dual SIM</span> ({{product.color}})</span>-->
-<!--        </p>-->
+        <p class="item__title" v-if="product.productType === 'iphone'">
+          <span v-if="product.condition === 'used'">used</span>
+          {{product.model}} <span>{{product.memory}}GB
+        <span v-if="product.hasTwoSim === 'yes'">Dual SIM</span> ({{product.color}})</span>
+        </p>
 
-<!--        <p class="item__title" *ngIf="product.hasTouchBar">-->
-<!--          {{product.model}} {{product.diagonal}} {{product.memory}} ({{product.color}})-->
-<!--          <span *ngIf="product.hasTouchBar">with Touch Bar</span>-->
-<!--        </p>-->
+        <p class="item__title" v-if="product.productType === 'mac'">
+          {{product.model}} {{product.diagonal}} {{product.memory}} ({{product.color}})
+          <span v-if="product.hasTouchBar">with Touch Bar</span>
+        </p>
 
-<!--        <p class="item__title" *ngIf="product.generation">-->
-<!--          Apple Watch Series {{product.generation}} {{product.size}}mm {{product.color}} with-->
-<!--          {{product.strapColor}} {{product.strapSeries}}-->
-<!--        </p>-->
+        <p class="item__title" v-if="product.productType === 'watch'">
+          Apple Watch Series {{product.generation}} {{product.size}}mm {{product.color}} with
+          {{product.strapColor}} {{product.strapSeries}}
+        </p>
 
-<!--        <p class="item__price">Price per item: {{product.price | currency}}</p>-->
-<!--        <p class="item__count">Count-->
-<!--          <input class="item__counter" min="1" value="{{product.countInCart}}" type="number"-->
-<!--                 [(ngModel)]="product.countInCart" (change)="this.cartService.changeCartCounter(); calculateTotal()"/>-->
-<!--          : {{product.countInCart * product.price | currency}}-->
-<!--        </p>-->
-<!--      </div>-->
-<!--      <button class="btn" (click)="deleteFromCart(product, index)">Delete Item</button>-->
+        <p class="item__price">Price per item: {{product.price}} $</p>
+        <p class="item__count">Count
+          <input
+            class="item__counter"
+            min="1"
+            type="number"
+            v-model.number="product.countInCart"
+          />
+          : {{product.countInCart * product.price}} $
+        </p>
+      </div>
+      <button class="btn" @click="deleteFromCart(product.id)">Delete Item</button>
 
-<!--    </div>-->
+    </div>
 
-<!--    <div class="cart__submit">-->
-<!--      <p class="submit__total">Total: {{total | currency}}</p>-->
-<!--      <button class="btn submit__button" (click)="submitOrder()">Submit order</button>-->
-<!--    </div>-->
+    <div class="cart__submit">
+      <p class="submit__total">Total: {{totalSum}} $</p>
+      <button class="btn submit__button" @click="submitOrder()">Submit order</button>
+    </div>
 
-<!--  </div>-->
+  </div>
 </template>
 
 <script lang="ts">
@@ -62,9 +65,81 @@ export default class Cart extends Vue {
   get cartItems (): any {
     return this.$store.state.cart.items
   }
+
+  get totalSum (): number {
+    return this.$store.getters['cart/totalSum']
+  }
+
+  deleteFromCart (id: string): void {
+    this.$store.dispatch('cart/deleteProduct', id)
+  }
+
+  submitOrder (): void {
+    this.$store.dispatch('cart/submitOrder')
+  }
 }
 </script>
 
 <style lang="scss" scoped>
+  .cart {
+    max-width: 700px;
+    margin: 0 auto 40px;
+    background-color: var(--light-color);
 
+    &__item {
+      display: flex;
+    }
+
+    &__submit {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      border-top: 1px solid var(--dark-color);
+
+      .submit__total {
+        margin-right: 20px;
+        color: var(--detail-color);
+        font-weight: bold;
+      }
+
+      .submit__button {
+        margin-left: 0;
+        background-color: var(--detail-color);
+      }
+    }
+  }
+
+  .item {
+
+    &__photo {
+      cursor: pointer;
+      padding: 10px 20px;
+    }
+
+    &__info {
+
+      p {
+        margin-top: 10px;
+      }
+    }
+
+    &__title {
+      font-size: 18px;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    &__counter {
+      width: 40px;
+    }
+  }
+
+  .btn {
+    min-width: 100px;
+    height: 100%;
+    display: inline-block;
+    background-color: var(--dark-color);
+    margin-left: auto;
+    padding: 10px;
+  }
 </style>

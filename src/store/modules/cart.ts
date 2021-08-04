@@ -6,6 +6,10 @@ export default {
     items: []
   },
   mutations: {
+    setItems (state: any, items: Iphone[] | Mac[] | Watch[]) {
+      state.items = items
+    },
+
     addItem (state: any, item: Iphone | Mac | Watch) {
       state.items.push(item)
     },
@@ -24,7 +28,15 @@ export default {
       } else {
         commit('addExistingItem', existingItem.id)
       }
-      console.log('items', state.items)
+    },
+
+    deleteProduct ({ commit, state }: any, id: string) {
+      const clearedItems = state.items.filter((item: Iphone | Mac | Watch) => item.id !== id)
+      commit('setItems', clearedItems)
+    },
+
+    submitOrder ({ commit }: any) {
+      commit('setItems', [])
     }
   },
   getters: {
@@ -34,6 +46,14 @@ export default {
         counter += item.countInCart!
       })
       return counter
+    },
+
+    totalSum (state: any) {
+      let total = 0
+      state.items.forEach((item: Iphone | Mac | Watch) => {
+        total += item.price * item.countInCart!
+      })
+      return total
     }
   }
 }
