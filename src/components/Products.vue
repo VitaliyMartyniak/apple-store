@@ -42,7 +42,6 @@
 <script lang='ts'>
 import { Options, Vue } from 'vue-class-component'
 import ProductCard from '@/components/ProductCard.vue'
-import { Watch as WatchDecorator } from 'vue-property-decorator'
 import { Iphone, Mac, ProductType, Watch } from '@/types/products'
 import Pagination from '@/components/ProductsPagination.vue'
 
@@ -53,15 +52,15 @@ import Pagination from '@/components/ProductsPagination.vue'
   }
 })
 export default class Products extends Vue {
-  @WatchDecorator('$route', { immediate: true, deep: true })
-  onUrlChange (newRoute: any) {
-    this.$store.dispatch('products/getItems', newRoute.params.productType)
-    if (this.$route.query.page) {
-      this.$store.dispatch('products/setupPagination', +this.$route.query.page)
-    } else {
-      this.$store.dispatch('products/setupPagination', 1)
-    }
-  }
+  // @WatchDecorator('$route', { immediate: true, deep: true })
+  // onUrlChange (newRoute: any) {
+  //   this.$store.dispatch('products/getItems', newRoute.params.productType)
+  //   if (this.$route.query.page) {
+  //     this.$store.dispatch('products/setupPagination', +this.$route.query.page)
+  //   } else {
+  //     this.$store.dispatch('products/setupPagination', 1)
+  //   }
+  // }
 
   productType!: ProductType
 

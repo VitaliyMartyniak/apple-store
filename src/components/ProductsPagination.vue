@@ -30,6 +30,8 @@ export default class ProductsPagination extends Vue {
   }
 
   changePageHandler (page: number) {
+    console.log('current path', this.$route.path)
+    console.log('path to navigate', `${this.$route.path}?page=${page}`)
     this.$router.push(`${this.$route.path}?page=${page}`)
     this.$store.dispatch('products/setupPagination', page)
   }

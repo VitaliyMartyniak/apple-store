@@ -3,12 +3,17 @@
 <!--    <h1>This is {{product}} Catalog</h1>-->
 <!--  </div>-->
 
-  <CatalogOptions />
+  <CatalogOptions
+    v-if="loaded"
+  />
 
   <div class="main">
-    <ProductFilters />
+    <ProductFilters
+      v-if="loaded"
+    />
 
     <Products
+      v-if="loaded"
       :productType="productType"
     />
   </div>
@@ -19,6 +24,7 @@ import { Options, Vue } from 'vue-class-component'
 import CatalogOptions from '@/components/CatalogOptions.vue'
 import ProductFilters from '@/components/ProductFilters.vue'
 import Products from '@/components/Products.vue'
+import { Watch as WatchDecorator } from 'vue-property-decorator/lib/decorators/Watch'
 // import { ProductType } from '@/types/products'
 
 @Options({
@@ -27,12 +33,23 @@ import Products from '@/components/Products.vue'
     ProductFilters,
     CatalogOptions
   }
-
-  // props: {
-  //   msg: String
-  // }
 })
 export default class Catalog extends Vue {
+  loaded = false
+  @WatchDecorator('$route', { immediate: true, deep: true })
+  onUrlChange (newRoute: any) {
+    this.loaded = false
+    this.$store.dispatch('products/getItems', newRoute.params.productType)
+    if (this.$route.query.page) {
+      this.$store.dispatch('products/setupPagination', +this.$route.query.page)
+    } else {
+      this.$store.dispatch('products/setupPagination', 1)
+    }
+    setTimeout(() => {
+      this.loaded = true
+    }, 0)
+  }
+
   get productType (): string | string[] {
     return this.$route.params.productType
   }

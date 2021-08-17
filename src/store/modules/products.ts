@@ -8,7 +8,8 @@ export default {
     page: 1,
     pageSize: 9,
     pageCount: 0,
-    paginatedItems: []
+    paginatedItems: [],
+    value: null
   },
   mutations: {
     setItems (state: any, items: Iphone[] | Mac[] | Watch[]) {
@@ -22,9 +23,30 @@ export default {
     },
     setPaginatedItems (state: any, items: Iphone[] | Mac[] | Watch[]) {
       state.paginatedItems = items
+    },
+    setValue (state: any, value: any[]) {
+      console.log('value', value)
+      state.value = value
+    }
+  },
+  getters: {
+    value (state: any) {
+      return state.value
+    },
+    maxPrice (state: any) {
+      let result = 0
+      state.items.forEach((item: Iphone | Mac | Watch) => {
+        if (item.price > result) {
+          result = item.price
+        }
+      })
+      return result
     }
   },
   actions: {
+    setPriceFilter ({ commit }: any, payload: number) {
+      commit('setValue', [0, payload])
+    },
     // changePage ({ state, commit }: any, payload: number) {
     //   const items = _.chunk(state.items, state.pageSize)
     //   const paginatedItems = items[payload - 1] || items[0]

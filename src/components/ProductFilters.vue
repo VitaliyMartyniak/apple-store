@@ -1,15 +1,11 @@
 <template>
-  <p>Here would be filters !</p>
-<!--  <div class="filters">-->
-<!--    <div class="filter">-->
-<!--      <p class="filter__title">Price</p>-->
-<!--      <div>-->
-<!--        <div class="filter__price">-->
-<!--          <ng5-slider [(value)]="minPrice" [(highValue)]="maxPrice" [options]="options"-->
-<!--                      (valueChange)="priceOnChange(minPrice, maxPrice)"></ng5-slider>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
+  <div class="filters">
+    <div class="filter">
+      <p class="filter__title">Price</p>
+        <div class="filter__price">
+          <PriceFilter />
+        </div>
+    </div>
 
 <!--    <div class="filter">-->
 <!--      <p class="filter__title">Model</p>-->
@@ -80,18 +76,50 @@
 <!--        </label>-->
 <!--      </div>-->
 <!--    </div>-->
-<!--  </div>-->
+  </div>
 </template>
 
-<script lang="ts">
-import { Options, Vue } from 'vue-class-component'
+<script>
+import PriceFilter from '@/components/PriceFilter'
 
-@Options({
-  // props: {
-  //   msg: String
-  // }
-})
-export default class ProductFilters extends Vue {
-  // msg!: string
+export default {
+  components: {
+    PriceFilter
+  }
 }
 </script>
+
+<style lang="scss">
+  .filters {
+    width: 23%;
+    height: 100%;
+    background-color: var(--light-color);
+    padding: 20px;
+  }
+
+  .filter {
+    margin-bottom: 20px;
+
+    &__title {
+      font-size: 20px;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+
+    &__element {
+      margin-bottom: 10px;
+    }
+
+    &__label {
+      cursor: pointer;
+    }
+
+    &__name {
+      margin-left: 5px;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+</style>
