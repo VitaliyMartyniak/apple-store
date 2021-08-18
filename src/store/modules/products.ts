@@ -9,11 +9,15 @@ export default {
     pageSize: 9,
     pageCount: 0,
     paginatedItems: [],
-    value: null
+    filteredItems: [],
+    priceRange: null
   },
   mutations: {
     setItems (state: any, items: Iphone[] | Mac[] | Watch[]) {
       state.items = items
+    },
+    setFilteredItems (state: any, items: Iphone[] | Mac[] | Watch[]) {
+      state.filteredItems = items
     },
     setPage (state: any, value: number) {
       state.page = value
@@ -24,9 +28,8 @@ export default {
     setPaginatedItems (state: any, items: Iphone[] | Mac[] | Watch[]) {
       state.paginatedItems = items
     },
-    setValue (state: any, value: any[]) {
-      console.log('value', value)
-      state.value = value
+    setPriceRange (state: any, value: any[]) {
+      state.priceRange = value
     }
   },
   getters: {
@@ -45,7 +48,11 @@ export default {
   },
   actions: {
     setPriceFilter ({ commit }: any, payload: number) {
-      commit('setValue', [0, payload])
+      commit('setPriceRange', [0, payload])
+    },
+    setPriceRange ({ commit, dispatch }: any, payload: any[]) {
+      commit('setPriceRange', payload)
+      dispatch('filterItems')
     },
     // changePage ({ state, commit }: any, payload: number) {
     //   const items = _.chunk(state.items, state.pageSize)
@@ -54,17 +61,33 @@ export default {
     //   commit('setPaginatedItems', paginatedItems)
     // },
     setupPagination ({ state, commit }: any, payload: number) {
-      commit('setPage', payload)
-      const items = _.chunk(state.items, state.pageSize)
+      console.log('pagination')
+      const items = _.chunk(state.filteredItems, state.pageSize)
       const pageCount = _.size(items)
       commit('setPageCount', pageCount)
       let paginatedItems = []
-      paginatedItems = items[payload - 1]
+      if (payload) {
+        commit('setPage', payload)
+        paginatedItems = items[payload - 1]
+      } else {
+        paginatedItems = items[state.page - 1]
+      }
       commit('setPaginatedItems', paginatedItems)
+    },
+    filterItems ({ state, commit, dispatch }: any) {
+      const filteredItems: any[] = []
+      console.log('state.items', state.items)
+      state.items.forEach((item: Iphone | Mac | Watch) => {
+        if (item.price >= state.priceRange[0] && item.price <= state.priceRange[1]) {
+          filteredItems.push(item)
+        }
+      })
+      commit('setFilteredItems', filteredItems)
+      dispatch('setupPagination', 1)
     },
     getItems ({ commit }: any, payload: ProductType) {
       if (payload === 'iphone') {
-        commit('setItems', [
+        const iphones = [
           {
             model: 'iPhone 11 Pro Max',
             color: 'Midnight Green',
@@ -714,9 +737,11 @@ export default {
             countInCart: 1,
             id: '59'
           }
-        ])
+        ]
+        commit('setItems', iphones)
+        commit('setFilteredItems', iphones)
       } else if (payload === 'mac') {
-        commit('setItems', [
+        const macs = [
           {
             model: 'MacBook Pro',
             diagonal: '13 inches',
@@ -915,9 +940,11 @@ export default {
             countInCart: 1,
             id: '77'
           }
-        ])
+        ]
+        commit('setItems', macs)
+        commit('setFilteredItems', macs)
       } else if (payload === 'watch') {
-        commit('setItems', [
+        const watches = [
           {
             generation: 3,
             model: 'Apple Watch Sport',
@@ -1410,7 +1437,9 @@ export default {
             countInCart: 1,
             id: '118'
           }
-        ])
+        ]
+        commit('setItems', watches)
+        commit('setFilteredItems', watches)
       }
     }
   }

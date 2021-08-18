@@ -36,10 +36,16 @@ import { Watch as WatchDecorator } from 'vue-property-decorator/lib/decorators/W
 })
 export default class Catalog extends Vue {
   loaded = false
+  path = null
   @WatchDecorator('$route', { immediate: true, deep: true })
   onUrlChange (newRoute: any) {
-    this.loaded = false
-    this.$store.dispatch('products/getItems', newRoute.params.productType)
+    console.log('newRoute', newRoute)
+    if (!this.path || this.path !== newRoute.params.productType) {
+      this.$store.dispatch('products/getItems', newRoute.params.productType)
+      this.path = newRoute.params.productType
+      this.loaded = false
+      console.log('works')
+    }
     if (this.$route.query.page) {
       this.$store.dispatch('products/setupPagination', +this.$route.query.page)
     } else {

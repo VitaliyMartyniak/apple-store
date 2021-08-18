@@ -1,5 +1,5 @@
 <template>
-  <slider @update="update" v-if="mounted" :max="maxPrice" v-model="value"></slider>
+  <slider @change="update" :max="maxPrice" v-model="value"></slider>
 <!--            <slider [(value)]="minPrice" [(highValue)]="maxPrice" [options]="options"-->
 <!--                        (valueChange)="priceOnChange(minPrice, maxPrice)"></slider>-->
 </template>
@@ -13,8 +13,7 @@ export default {
   },
   data () {
     return {
-      value: null,
-      mounted: false
+      value: [0, 0]
       // maxPrice: null
     }
   },
@@ -29,12 +28,12 @@ export default {
     //   return this.$store.getters['products/value']
     // }
   },
-  watch: {
-    $route () {
-      console.log(this.$route)
-      this.setValue()
-    }
-  },
+  // watch: {
+  //   $route () {
+  //     console.log(this.$route)
+  //     this.setValue()
+  //   }
+  // },
   mounted () {
     console.log('mounted')
     this.setValue()
@@ -46,20 +45,12 @@ export default {
     setValue () {
       console.log('setValue')
       this.$store.dispatch('products/setPriceFilter', this.maxPrice)
-      // this.$store.commit('products/setValue', [0, this.maxPrice])
-      // let result = 0
-      // this.items.forEach((item) => {
-      //   if (item.price > result) {
-      //     result = item.price
-      //   }
-      // })
-      // console.log('this.maxPrice', this.maxPrice)
       this.value = [0, this.maxPrice]
-      this.mounted = true
     },
     update () {
-      // this.$store.commit('products/setValue', this.value)
-      console.log('this.value', this.value)
+      this.$store.dispatch('products/setPriceRange', this.value)
+      // this.$store.dispatch('products/filterItems')
+      // this.$store.dispatch('products/setupPagination')
     }
   }
 }
