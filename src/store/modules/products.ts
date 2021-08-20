@@ -10,7 +10,8 @@ export default {
     pageCount: 0,
     paginatedItems: [],
     filteredItems: [],
-    priceRange: null
+    priceRange: null,
+    categories: {}
   },
   mutations: {
     setItems (state: any, items: Iphone[] | Mac[] | Watch[]) {
@@ -30,6 +31,9 @@ export default {
     },
     setPriceRange (state: any, value: any[]) {
       state.priceRange = value
+    },
+    setCategories (state: any, value: any[]) {
+      state.categories = value
     }
   },
   getters: {
@@ -47,6 +51,49 @@ export default {
     }
   },
   actions: {
+    formCategories ({ state, commit }: any) {
+      const categories: any = {}
+      const possibleCategories: string[] = []
+
+      for (const key in state.items[0]) {
+        if (key !== 'id' &&
+            key !== 'countInCart' &&
+            key !== 'photo' &&
+            key !== 'price') {
+          possibleCategories.push(key)
+        }
+      }
+
+      console.log('possibleCategories', possibleCategories)
+
+      possibleCategories.forEach((categoryName: string) => {
+        let parameterArray: string[] = []
+        state.items.forEach((item: any) => {
+          parameterArray.push(item[categoryName])
+        })
+        parameterArray = [...new Set(parameterArray)]
+
+        const arr = parameterArray.map(parameter => {
+          return {
+            name: parameter,
+            checked: false
+          }
+        })
+
+        console.log('arr', arr)
+
+        categories[categoryName] = arr
+        // parameterArray.forEach(parameter => {
+        //   categories[categoryName] = {
+        //     name: parameter,
+        //     checked: false
+        //   }
+        // })
+      })
+
+      console.log('categories', categories)
+      commit('setCategories', categories)
+    },
     setPriceFilter ({ commit }: any, payload: number) {
       commit('setPriceRange', [0, payload])
     },

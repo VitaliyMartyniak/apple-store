@@ -22,7 +22,7 @@ export default class ProductsPagination extends Vue {
   }
 
   @Watch('page')
-  onPropertyChanged (page: string) {
+  onPropertyChanged (page: number) {
     this.$router.push(`${this.$route.path}?page=${page}`)
   }
 

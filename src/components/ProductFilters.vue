@@ -7,6 +7,21 @@
         </div>
     </div>
 
+    <div v-for="(value, name) in categories" :key="name">
+      <div class="filter">
+        <p class="filter__title">{{ name.toUpperCase() }}</p>
+        <div class="filter__element" v-for="model of value" :key="model.name">
+          <label class="filter__label">
+            <input type="checkbox" :checked="model.checked">
+<!--            <i class="far fa-square"></i>-->
+<!--            <i class="far fa-check-square"></i>-->
+            <span class="filter__name">{{model.name}}</span>
+          </label>
+        </div>
+      </div>
+      <hr/>
+    </div>
+
 <!--    <div class="filter">-->
 <!--      <p class="filter__title">Model</p>-->
 <!--      <div class="filter__element" *ngFor="let model of modelCategories">-->
@@ -79,12 +94,20 @@
   </div>
 </template>
 
-<script>
-import PriceFilter from '@/components/PriceFilter'
+<script lang="ts">
+import { Options, Vue } from 'vue-class-component'
+import PriceFilter from '@/components/PriceFilter.vue'
 
-export default {
-  components: {
-    PriceFilter
+@Options({
+  components: { PriceFilter }
+})
+export default class ProductFilters extends Vue {
+  mounted () {
+    this.$store.dispatch('products/formCategories')
+  }
+
+  get categories (): any {
+    return this.$store.state.products.categories
   }
 }
 </script>
