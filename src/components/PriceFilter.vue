@@ -1,7 +1,5 @@
 <template>
   <slider @change="update" :max="maxPrice" v-model="value"></slider>
-<!--            <slider [(value)]="minPrice" [(highValue)]="maxPrice" [options]="options"-->
-<!--                        (valueChange)="priceOnChange(minPrice, maxPrice)"></slider>-->
 </template>
 
 <script>
@@ -14,7 +12,6 @@ export default {
   data () {
     return {
       value: [0, 0]
-      // maxPrice: null
     }
   },
   computed: {
@@ -24,16 +21,7 @@ export default {
     maxPrice () {
       return this.$store.getters['products/maxPrice']
     }
-    // value () {
-    //   return this.$store.getters['products/value']
-    // }
   },
-  // watch: {
-  //   $route () {
-  //     console.log(this.$route)
-  //     this.setValue()
-  //   }
-  // },
   mounted () {
     console.log('mounted')
     this.setValue()
@@ -49,8 +37,6 @@ export default {
     },
     update () {
       this.$store.dispatch('products/setPriceRange', this.value)
-      // this.$store.dispatch('products/filterItems')
-      // this.$store.dispatch('products/setupPagination')
     }
   }
 }
@@ -58,4 +44,13 @@ export default {
 
 <style lang="scss">
 @import 'node_modules/@vueform/slider/themes/default.scss';
+
+.slider-connect {
+  background-color: var(--detail-color);
+}
+
+.slider-tooltip {
+  border: 1px solid var(--detail-color);
+  background: var(--detail-color);
+}
 </style>

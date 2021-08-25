@@ -2,95 +2,42 @@
   <div class="filters">
     <div class="filter">
       <p class="filter__title">Price</p>
-        <div class="filter__price">
-          <PriceFilter />
-        </div>
+      <div class="filter__price">
+        <PriceFilter />
+      </div>
     </div>
 
-    <div v-for="(value, name) in categories" :key="name">
+    <div v-for="(category, name) in categories" :key="name">
       <div class="filter">
-        <p class="filter__title">{{ name.toUpperCase() }}</p>
-        <div class="filter__element" v-for="model of value" :key="model.name">
+        <p
+          class="filter__title"
+          v-if="name === 'hasTwoSim'"
+        >Has Two Sim?</p>
+        <p
+          class="filter__title"
+          v-else-if="name === 'hasTouchBar'"
+        >Has Touch Bar?</p>
+        <p
+          class="filter__title"
+          v-else-if="name === 'strapSeries'"
+        >Strap Series</p>
+        <p
+          class="filter__title"
+          v-else-if="name === 'strapColor'"
+        >Strap Color</p>
+        <p class="filter__title" v-else>
+          {{ capitalise(name) }}
+        </p>
+        <div class="filter__element" v-for="param of category" :key="param.name">
           <label class="filter__label">
-            <input type="checkbox" :checked="model.checked">
-<!--            <i class="far fa-square"></i>-->
-<!--            <i class="far fa-check-square"></i>-->
-            <span class="filter__name">{{model.name}}</span>
+            <input type="checkbox" hidden v-model="param.checked" @change="updateCategories">
+            <i class="far fa-square" v-if="!param.checked"></i>
+            <i class="far fa-check-square" v-if="param.checked"></i>
+            <span class="filter__name">{{name === 'generation' ? 'Apple Watch Series' : ''}} {{param.name}} {{name === 'memory' ? 'GB' : ''}} {{name === 'size' ? 'mm' : ''}}</span>
           </label>
         </div>
       </div>
-      <hr/>
     </div>
-
-<!--    <div class="filter">-->
-<!--      <p class="filter__title">Model</p>-->
-<!--      <div class="filter__element" *ngFor="let model of modelCategories">-->
-<!--        <label class="filter__label">-->
-<!--          <input type="checkbox" [checked]="model.checked"-->
-<!--                 (change)="setChanges($event, model,-->
-<!--             'modelsToFilter', 'modelCategories')">-->
-<!--          <i class="far fa-square"></i>-->
-<!--          <i class="far fa-check-square"></i>-->
-<!--          <span class="filter__name">{{model.name}}</span>-->
-<!--        </label>-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    <div class="filter">-->
-<!--      <p class="filter__title">New or used?</p>-->
-<!--      <div class="filter__element" *ngFor="let condition of conditionCategories">-->
-<!--        <label class="filter__label">-->
-<!--          <input type="checkbox" [checked]="condition.checked"-->
-<!--                 (change)="setChanges($event, condition,-->
-<!--             'conditionsToFilter', 'conditionCategories')">-->
-<!--          <i class="far fa-square"></i>-->
-<!--          <i class="far fa-check-square"></i>-->
-<!--          <span class="filter__name">{{condition.name}}</span>-->
-<!--        </label>-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    <div class="filter">-->
-<!--      <p class="filter__title">Memory</p>-->
-<!--      <div class="filter__element" *ngFor="let memory of memoryCategories">-->
-<!--        <label class="filter__label">-->
-<!--          <input type="checkbox" [checked]="memory.checked"-->
-<!--                 (change)="setChanges($event, memory,-->
-<!--             'memoriesToFilter', 'memoryCategories')">-->
-<!--          <i class="far fa-square"></i>-->
-<!--          <i class="far fa-check-square"></i>-->
-<!--          <span class="filter__name">{{memory.name}}GB</span>-->
-<!--        </label>-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    <div class="filter">-->
-<!--      <p class="filter__title">Color</p>-->
-<!--      <div class="filter__element" *ngFor="let color of colorCategories">-->
-<!--        <label class="filter__label">-->
-<!--          <input type="checkbox" [checked]="color.checked"-->
-<!--                 (change)="setChanges($event, color,-->
-<!--             'colorsToFilter', 'colorCategories')">-->
-<!--          <i class="far fa-square"></i>-->
-<!--          <i class="far fa-check-square"></i>-->
-<!--          <span class="filter__name">{{color.name}}</span>-->
-<!--        </label>-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    <div class="filter">-->
-<!--      <p class="filter__title">Has 2 Sim?</p>-->
-<!--      <div class="filter__element" *ngFor="let hasTwoSim of hasTwoSimCategories">-->
-<!--        <label class="filter__label">-->
-<!--          <input type="checkbox" [checked]="hasTwoSim.checked"-->
-<!--                 (change)="setChanges($event, hasTwoSim,-->
-<!--             'hasTwoSimsToFilter', 'hasTwoSimCategories')">-->
-<!--          <i class="far fa-square"></i>-->
-<!--          <i class="far fa-check-square"></i>-->
-<!--          <span class="filter__name">{{hasTwoSim.name}}</span>-->
-<!--        </label>-->
-<!--      </div>-->
-<!--    </div>-->
   </div>
 </template>
 
@@ -108,6 +55,14 @@ export default class ProductFilters extends Vue {
 
   get categories (): any {
     return this.$store.state.products.categories
+  }
+
+  updateCategories (): any {
+    this.$store.dispatch('products/updateCategories', this.categories)
+  }
+
+  capitalise (word : string): string {
+    return word[0].toUpperCase() + word.slice(1).toLowerCase()
   }
 }
 </script>
@@ -129,6 +84,11 @@ export default class ProductFilters extends Vue {
       font-weight: bold;
     }
 
+    &__price {
+      width: 92%;
+      margin: 50px auto 0;
+    }
+
     &__element {
       margin-bottom: 10px;
     }
@@ -144,5 +104,13 @@ export default class ProductFilters extends Vue {
     &:last-child {
       margin-bottom: 0;
     }
+  }
+
+  input[type='checkbox']:checked ~ .fa-check-square {
+    color: var(--detail-color);
+  }
+
+  input[type='checkbox']:checked ~ .filter__name {
+    color: var(--detail-color);
   }
 </style>

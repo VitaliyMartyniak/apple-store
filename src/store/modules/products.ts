@@ -64,8 +64,6 @@ export default {
         }
       }
 
-      console.log('possibleCategories', possibleCategories)
-
       possibleCategories.forEach((categoryName: string) => {
         let parameterArray: string[] = []
         state.items.forEach((item: any) => {
@@ -73,26 +71,25 @@ export default {
         })
         parameterArray = [...new Set(parameterArray)]
 
-        const arr = parameterArray.map(parameter => {
+        if (categoryName === 'memory' || categoryName === 'size') {
+          parameterArray.sort((a: string, b: string) => +a - +b)
+        } else if (categoryName !== 'model') {
+          parameterArray.sort()
+        }
+
+        categories[categoryName] = parameterArray.map(parameter => {
           return {
             name: parameter,
             checked: false
           }
         })
-
-        console.log('arr', arr)
-
-        categories[categoryName] = arr
-        // parameterArray.forEach(parameter => {
-        //   categories[categoryName] = {
-        //     name: parameter,
-        //     checked: false
-        //   }
-        // })
       })
 
-      console.log('categories', categories)
       commit('setCategories', categories)
+    },
+    updateCategories ({ commit, dispatch }: any, payload: any) {
+      commit('setCategories', payload)
+      dispatch('filterItems')
     },
     setPriceFilter ({ commit }: any, payload: number) {
       commit('setPriceRange', [0, payload])
@@ -122,13 +119,22 @@ export default {
       commit('setPaginatedItems', paginatedItems)
     },
     filterItems ({ state, commit, dispatch }: any) {
-      const filteredItems: any[] = []
-      console.log('state.items', state.items)
-      state.items.forEach((item: Iphone | Mac | Watch) => {
-        if (item.price >= state.priceRange[0] && item.price <= state.priceRange[1]) {
-          filteredItems.push(item)
-        }
+      let filteredItems: any[] = [...state.items]
+      filteredItems = filteredItems.filter((item: Iphone | Mac | Watch) => {
+        return item.price >= state.priceRange[0] && item.price <= state.priceRange[1]
       })
+      const categories: any = { ...state.categories }
+      for (const category in categories) {
+        const presentParams: string[] = []
+        categories[category].forEach((param: any) => {
+          if (param.checked) {
+            presentParams.push(param.name)
+          }
+        })
+        if (presentParams.length) {
+          filteredItems = filteredItems.filter((item: any) => presentParams.includes(item[category]))
+        }
+      }
       commit('setFilteredItems', filteredItems)
       dispatch('setupPagination', 1)
     },
