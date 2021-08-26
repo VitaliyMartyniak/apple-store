@@ -1,8 +1,4 @@
 <template>
-<!--  <div class="catalog">-->
-<!--    <h1>This is {{product}} Catalog</h1>-->
-<!--  </div>-->
-
   <CatalogOptions
     v-if="loaded"
   />
@@ -59,7 +55,6 @@ export default class Catalog extends Vue {
   get productType (): string | string[] {
     return this.$route.params.productType
   }
-  // msg!: string
 }
 </script>
 

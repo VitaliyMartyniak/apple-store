@@ -11,7 +11,8 @@ export default {
     paginatedItems: [],
     filteredItems: [],
     priceRange: null,
-    categories: {}
+    categories: {},
+    productsOrder: 'asc'
   },
   mutations: {
     setItems (state: any, items: Iphone[] | Mac[] | Watch[]) {
@@ -34,6 +35,12 @@ export default {
     },
     setCategories (state: any, value: any[]) {
       state.categories = value
+    },
+    setProductsOrder (state: any, value: string) {
+      state.productsOrder = value
+    },
+    setPageSize (state: any, value: number) {
+      state.pageSize = value
     }
   },
   getters: {
@@ -51,6 +58,14 @@ export default {
     }
   },
   actions: {
+    setPageSize ({ commit, dispatch }: any, value: number) {
+      commit('setPageSize', value)
+      dispatch('setupPagination', 1)
+    },
+    setProductsOrder ({ commit, dispatch }: any, order: string) {
+      commit('setProductsOrder', order)
+      dispatch('filterItems')
+    },
     formCategories ({ state, commit }: any) {
       const categories: any = {}
       const possibleCategories: string[] = []
@@ -120,6 +135,11 @@ export default {
     },
     filterItems ({ state, commit, dispatch }: any) {
       let filteredItems: any[] = [...state.items]
+      if (state.productsOrder === 'asc') {
+        filteredItems = filteredItems.sort((a, b) => a.price - b.price)
+      } else {
+        filteredItems = filteredItems.sort((a, b) => b.price - a.price)
+      }
       filteredItems = filteredItems.filter((item: Iphone | Mac | Watch) => {
         return item.price >= state.priceRange[0] && item.price <= state.priceRange[1]
       })
