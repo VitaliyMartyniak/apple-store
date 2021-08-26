@@ -12,9 +12,13 @@ export default {
     filteredItems: [],
     priceRange: null,
     categories: {},
-    productsOrder: 'asc'
+    productsOrder: '',
+    searchFilter: ''
   },
   mutations: {
+    setSearchFilter (state: any, value: string) {
+      state.searchFilter = value
+    },
     setItems (state: any, items: Iphone[] | Mac[] | Watch[]) {
       state.items = items
     },
@@ -58,6 +62,10 @@ export default {
     }
   },
   actions: {
+    searchProductsByText ({ commit, dispatch }: any, value: string) {
+      commit('setSearchFilter', value)
+      dispatch('filterItems')
+    },
     setPageSize ({ commit, dispatch }: any, value: number) {
       commit('setPageSize', value)
       dispatch('setupPagination', 1)
@@ -135,14 +143,37 @@ export default {
     },
     filterItems ({ state, commit, dispatch }: any) {
       let filteredItems: any[] = [...state.items]
+
+      if (state.searchFilter) {
+        const arr = state.searchFilter.split(' ')
+        filteredItems = filteredItems.filter((item: any) => {
+          let stringFromItem = ''
+          for (const key in item) {
+            if (key !== 'id' &&
+              key !== 'countInCart' &&
+              key !== 'photo' &&
+              key !== 'price') {
+              stringFromItem += item[key].toString().toLowerCase()
+            }
+          }
+          let result = true
+          arr.forEach((el: string) => {
+            result = stringFromItem.includes(el) && result
+          })
+          return result
+        })
+      }
+
       if (state.productsOrder === 'asc') {
         filteredItems = filteredItems.sort((a, b) => a.price - b.price)
-      } else {
+      } else if (state.productsOrder === 'desc') {
         filteredItems = filteredItems.sort((a, b) => b.price - a.price)
       }
+
       filteredItems = filteredItems.filter((item: Iphone | Mac | Watch) => {
         return item.price >= state.priceRange[0] && item.price <= state.priceRange[1]
       })
+
       const categories: any = { ...state.categories }
       for (const category in categories) {
         const presentParams: string[] = []
@@ -155,6 +186,7 @@ export default {
           filteredItems = filteredItems.filter((item: any) => presentParams.includes(item[category]))
         }
       }
+
       commit('setFilteredItems', filteredItems)
       dispatch('setupPagination', 1)
     },

@@ -37,6 +37,7 @@ export default class Catalog extends Vue {
   onUrlChange (newRoute: any) {
     console.log('newRoute', newRoute)
     if (!this.path || this.path !== newRoute.params.productType) {
+      this.$store.dispatch('products/setPriceFilter', '')
       this.$store.dispatch('products/getItems', newRoute.params.productType)
       this.path = newRoute.params.productType
       this.loaded = false

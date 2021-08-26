@@ -22,12 +22,9 @@
           :to="{ name: 'Catalog', params: { productType: 'watch' } }"
           :class="{'active': $route.path.includes('watch')}"
         >Watch</router-link>
-<!--        <a class="feedback" routerLinkActive="active" routerLink="/feedback">Feedbacks</a>-->
       </section>
       <div class="header__functionals">
-<!--        <input #textFilter class="search-input" type="text" placeholder="I'm looking for... ex.: 'iphone 8'"-->
-<!--               (input)="sendText(textFilter.value)"/>-->
-
+        <SearchFilter />
         <CartIcon />
       </div>
     </nav>
@@ -37,9 +34,10 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component'
 import CartIcon from '@/components/CartIcon.vue'
+import SearchFilter from '@/components/SearchFilter.vue'
 
 @Options({
-  components: { CartIcon }
+  components: { CartIcon, SearchFilter }
 
   // props: {
   //   msg: String
@@ -132,10 +130,10 @@ export default class Header extends Vue {
     }
   }
 
-  //&__functionals {
-  //  display: flex;
-  //  align-items: center;
-  //}
+  &__functionals {
+    display: flex;
+    align-items: center;
+  }
 }
 
 //.search-input {
