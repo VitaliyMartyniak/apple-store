@@ -1,15 +1,14 @@
 <template>
   <CatalogOptions
-    v-if="loaded"
+    v-if="!isLoading"
   />
 
-  <div class="main">
-    <ProductFilters
-      v-if="loaded"
-    />
+  <div
+    class="main"
+    v-if="!isLoading">
+    <ProductFilters/>
 
     <Products
-      v-if="loaded"
       :productType="productType"
     />
   </div>
@@ -21,7 +20,7 @@ import CatalogOptions from '@/components/CatalogOptions.vue'
 import ProductFilters from '@/components/ProductFilters.vue'
 import Products from '@/components/Products.vue'
 import { Watch as WatchDecorator } from 'vue-property-decorator/lib/decorators/Watch'
-// import { ProductType } from '@/types/products'
+import { Iphone, Mac, Watch } from '@/types/products'
 
 @Options({
   components: {
@@ -31,30 +30,27 @@ import { Watch as WatchDecorator } from 'vue-property-decorator/lib/decorators/W
   }
 })
 export default class Catalog extends Vue {
-  loaded = false
-  path = null
+  path: any = null
   @WatchDecorator('$route', { immediate: true, deep: true })
   onUrlChange (newRoute: any) {
-    console.log('newRoute', newRoute)
-    if (!this.path || this.path !== newRoute.params.productType) {
-      this.$store.dispatch('products/setPriceFilter', '')
-      this.$store.dispatch('products/getItems', newRoute.params.productType)
+    this.$store.dispatch('cart/getCartList')
+    console.log('roue', newRoute)
+    if ((!this.path || this.path !== newRoute.params.productType) && newRoute.name === 'Catalog') {
+      this.$store.dispatch('products/loadAll', newRoute)
       this.path = newRoute.params.productType
-      this.loaded = false
-      console.log('works')
     }
-    if (this.$route.query.page) {
-      this.$store.dispatch('products/setupPagination', +this.$route.query.page)
-    } else {
-      this.$store.dispatch('products/setupPagination', 1)
-    }
-    setTimeout(() => {
-      this.loaded = true
-    }, 0)
   }
 
   get productType (): string | string[] {
     return this.$route.params.productType
+  }
+
+  get isLoading (): boolean {
+    return this.$store.state.products.isLoading
+  }
+
+  get products (): Iphone[] | Mac[] | Watch[] {
+    return this.$store.state.products.paginatedItems
   }
 }
 </script>

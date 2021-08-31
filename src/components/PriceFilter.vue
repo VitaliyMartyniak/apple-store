@@ -11,7 +11,7 @@ export default {
   },
   data () {
     return {
-      value: [0, 0]
+      value: [0, 1]
     }
   },
   computed: {
@@ -23,15 +23,10 @@ export default {
     }
   },
   mounted () {
-    console.log('mounted')
     this.setValue()
-  },
-  unmounted () {
-    console.log('unmounted')
   },
   methods: {
     setValue () {
-      console.log('setValue')
       this.$store.dispatch('products/setPriceFilter', this.maxPrice)
       this.value = [0, this.maxPrice]
     },

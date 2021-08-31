@@ -49,6 +49,7 @@ export default class ProductCard extends Vue {
   addItem (product: Iphone | Mac | Watch) {
     const selectedProduct = { ...product, productType: this.productType }
     this.$store.dispatch('cart/addProduct', selectedProduct)
+    this.$store.commit('products/setAlertText', 'Product added to cart')
   }
 }
 </script>

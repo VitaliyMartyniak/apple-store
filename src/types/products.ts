@@ -27,7 +27,7 @@ export type Mac = {
 }
 
 export type Watch = {
-  generation: number;
+  generation: string;
   model: string;
   size: number;
   color: string;

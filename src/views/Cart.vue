@@ -40,6 +40,7 @@
             min="1"
             type="number"
             v-model.number="product.countInCart"
+            @change="changeProductCount(product)"
           />
           : {{product.countInCart * product.price}} $
         </p>
@@ -58,6 +59,7 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component'
+import { Iphone, Mac, Watch } from '@/types/products'
 
 @Options({
 })
@@ -70,12 +72,21 @@ export default class Cart extends Vue {
     return this.$store.getters['cart/totalSum']
   }
 
+  mounted (): void {
+    this.$store.dispatch('cart/getCartList')
+  }
+
+  changeProductCount (product: Iphone | Mac | Watch) {
+    this.$store.dispatch('cart/changeProductCount', product)
+  }
+
   deleteFromCart (id: string): void {
     this.$store.dispatch('cart/deleteProduct', id)
   }
 
   submitOrder (): void {
     this.$store.dispatch('cart/submitOrder')
+    this.$store.commit('products/setAlertText', 'Thank`s for your order!')
   }
 }
 </script>

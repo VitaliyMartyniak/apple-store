@@ -15,7 +15,6 @@ import { Options, Vue } from 'vue-class-component'
 })
 export default class SearchFilter extends Vue {
   get searchFilter (): string {
-    console.log('searchFilter', this.$store.state.products.searchFilter)
     return this.$store.state.products.searchFilter
   }
 
