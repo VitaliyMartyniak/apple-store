@@ -30,7 +30,7 @@
         </p>
         <div class="filter__element" v-for="param of category" :key="param.name">
           <label class="filter__label">
-            <input type="checkbox" hidden v-model="param.checked" @change="updateCategories">
+            <input type="checkbox" hidden v-model="param.checked" @change="updateUrlCategories(name, param)">
             <i class="far fa-square" v-if="!param.checked"></i>
             <i class="far fa-check-square" v-if="param.checked"></i>
             <span class="filter__name">{{name === 'generation' ? 'Apple Watch Series' : ''}} {{param.name}} {{name === 'memory' ? 'GB' : ''}} {{name === 'size' ? 'mm' : ''}}</span>
@@ -44,6 +44,7 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component'
 import PriceFilter from '@/components/PriceFilter.vue'
+import _ from 'lodash'
 
 @Options({
   components: { PriceFilter }
@@ -51,13 +52,45 @@ import PriceFilter from '@/components/PriceFilter.vue'
 export default class ProductFilters extends Vue {
   mounted () {
     this.$store.dispatch('products/formCategories')
+    if (this.$route.query.categories) {
+      const categories = JSON.parse(this.$route.query.categories.toString())
+      this.$store.dispatch('products/setCategoriesFromUrl', categories)
+    }
   }
 
   get categories (): any {
     return this.$store.state.products.categories
   }
 
-  updateCategories (): any {
+  updateUrlCategories (categoryName: string, param: any): any {
+    let categories: any = {}
+    if (this.$route.query.categories) {
+      categories = JSON.parse(this.$route.query.categories.toString())
+    }
+    if (param.checked) {
+      if (!categories[categoryName]) {
+        categories[categoryName] = param.name
+      } else {
+        categories[categoryName] += `,${param.name}`
+      }
+    } else {
+      categories[categoryName] = categories[categoryName]
+        .split(',')
+        .filter((item: string) => item !== param.name)
+        .join(',')
+      if (!categories[categoryName]) {
+        delete categories[categoryName]
+      }
+    }
+    let query = {}
+    if (_.isEmpty(categories)) {
+      const queryWithoutCategories = { ...this.$route.query }
+      delete queryWithoutCategories.categories
+      query = { ...queryWithoutCategories }
+    } else {
+      query = { ...this.$route.query, categories: JSON.stringify(categories) }
+    }
+    this.$router.replace({ query })
     this.$store.dispatch('products/updateCategories', this.categories)
   }
 

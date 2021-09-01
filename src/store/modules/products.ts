@@ -16,7 +16,8 @@ export default {
     productsOrder: '',
     searchFilter: '',
     isLoading: true,
-    alertText: ''
+    alertText: '',
+    setupedFromUrl: false
   },
   mutations: {
     setAlertText (state: any, value: string) {
@@ -54,6 +55,9 @@ export default {
     },
     setPageSize (state: any, value: number) {
       state.pageSize = value
+    },
+    completeSetup (state: any) {
+      state.setupedFromUrl = true
     }
   },
   getters: {
@@ -71,7 +75,7 @@ export default {
     }
   },
   actions: {
-    loadAll ({ state, commit, dispatch }: any, route: any) {
+    loadAll ({ commit, dispatch }: any, route: any) {
       commit('setLoading', true)
       axios.get(`https://apple-store-vue3-default-rtdb.firebaseio.com/${route.params.productType}.json`).then(response => {
         if (response.data.length) {
@@ -82,7 +86,6 @@ export default {
           } else {
             dispatch('setupPagination', 1)
           }
-          dispatch('setPriceFilter', '')
           commit('setLoading', false)
         }
       })
@@ -139,10 +142,21 @@ export default {
       commit('setCategories', payload)
       dispatch('filterItems')
     },
-    setPriceFilter ({ commit }: any, payload: number) {
-      commit('setPriceRange', [0, payload])
+    setCategoriesFromUrl ({ state, commit, dispatch }: any, urlCategories: any) {
+      console.log('urlCategories', urlCategories)
+      const categories: any = { ...state.categories }
+      console.log('categories', categories)
+      for (const category in categories) {
+        categories[category].forEach((param: any) => {
+          if (urlCategories[category] && urlCategories[category].toString().includes(param.name.toString())) {
+            param.checked = true
+          }
+        })
+      }
+      commit('setCategories', categories)
+      dispatch('filterItems')
     },
-    setPriceRange ({ commit, dispatch }: any, payload: any[]) {
+    setPriceRange ({ commit, dispatch }: any, payload: number[]) {
       commit('setPriceRange', payload)
       dispatch('filterItems')
     },
@@ -212,7 +226,12 @@ export default {
       }
 
       commit('setFilteredItems', filteredItems)
-      dispatch('setupPagination', 1)
+      if (!state.setupedFromUrl) {
+        dispatch('setupPagination')
+        commit('completeSetup')
+      } else {
+        dispatch('setupPagination', 1)
+      }
     }
   }
 }

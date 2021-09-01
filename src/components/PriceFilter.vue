@@ -20,6 +20,9 @@ export default {
     },
     maxPrice () {
       return this.$store.getters['products/maxPrice']
+    },
+    priceRange () {
+      return this.$store.state.products.priceRange
     }
   },
   mounted () {
@@ -27,11 +30,27 @@ export default {
   },
   methods: {
     setValue () {
-      this.$store.dispatch('products/setPriceFilter', this.maxPrice)
-      this.value = [0, this.maxPrice]
+      if (this.$route.query.price) {
+        console.log('route.query.price', this.$route.query.price.split(',').map(item => +item))
+        this.$store.dispatch('products/setPriceRange', this.$route.query.price.split(',').map(item => +item))
+        this.value = this.$route.query.price.split(',').map(item => +item)
+      } else {
+        this.$store.dispatch('products/setPriceRange', [0, this.maxPrice])
+        this.value = [0, this.maxPrice]
+      }
     },
     update () {
       this.$store.dispatch('products/setPriceRange', this.value)
+    }
+  },
+  watch: {
+    value () {
+      // console.log('priceRange', this.priceRange)
+      // if (this.priceRange !== [0, this.maxPrice]) {
+      const query = { ...this.$route.query, price: this.value.join(',') }
+      this.$router.replace({ query })
+      // this.$router.push(`${this.$route.path}?price=${this.value}`)
+      // }
     }
   }
 }
