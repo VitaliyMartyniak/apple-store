@@ -13,7 +13,6 @@
     />
   </div>
   <Loader
-    class="loader"
     v-if="isLoading"
   />
 </template>
@@ -39,8 +38,8 @@ export default class Catalog extends Vue {
   path: any = null
   @WatchDecorator('$route', { immediate: true, deep: true })
   onUrlChange (newRoute: any) {
-    this.$store.dispatch('cart/getCartList')
     if ((!this.path || this.path !== newRoute.params.productType) && newRoute.name === 'Catalog') {
+      this.$store.dispatch('cart/getCartList')
       this.$store.commit('products/setCategories', {})
       this.$store.dispatch('products/loadAll', newRoute)
       this.path = newRoute.params.productType
@@ -65,12 +64,5 @@ export default class Catalog extends Vue {
   .main {
     max-width: 1400px;
     display: flex;
-  }
-
-  .loader {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
   }
 </style>

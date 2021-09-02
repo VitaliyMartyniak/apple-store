@@ -1,4 +1,7 @@
 <template>
+  <Loader
+    v-if="isLoading"
+  />
   <p v-if="!cartItems.length">Cart is empty</p>
   <div class="cart" v-else>
 
@@ -60,10 +63,18 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component'
 import { Iphone, Mac, Watch } from '@/types/products'
+import Loader from '@/components/Loader.vue'
 
 @Options({
+  components: {
+    Loader
+  }
 })
 export default class Cart extends Vue {
+  get isLoading (): boolean {
+    return this.$store.state.cart.isLoading
+  }
+
   get cartItems (): any {
     return this.$store.state.cart.items
   }

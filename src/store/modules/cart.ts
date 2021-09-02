@@ -4,17 +4,19 @@ import axios from 'axios'
 export default {
   namespaced: true,
   state: {
-    items: []
+    items: [],
+    isLoading: true
   },
   mutations: {
+    setLoading (state: any, value: boolean) {
+      state.isLoading = value
+    },
     setItems (state: any, items: Iphone[] | Mac[] | Watch[]) {
       state.items = items
     },
-
     addItem (state: any, item: Iphone | Mac | Watch) {
       state.items.push(item)
     },
-
     addExistingItem (state: any, id: string) {
       const index = state.items.findIndex((item: Iphone | Mac | Watch) => item.id === id)
       state.items[index].countInCart++
@@ -47,22 +49,28 @@ export default {
     },
 
     getCartList ({ commit }: any) {
+      commit('setLoading', true)
       axios.get('https://apple-store-vue3-default-rtdb.firebaseio.com/cart.json').then(response => {
         if (!response.data) {
           commit('setItems', [])
         } else {
           commit('setItems', response.data)
         }
+        commit('setLoading', false)
       })
     },
 
-    updateCartList ({ state }: any) {
+    updateCartList ({ state, commit }: any) {
+      commit('setLoading', true)
       axios.put('https://apple-store-vue3-default-rtdb.firebaseio.com/cart.json', state.items)
+      commit('setLoading', false)
     },
 
     submitOrder ({ commit }: any) {
+      commit('setLoading', true)
       commit('setItems', [])
       axios.put('https://apple-store-vue3-default-rtdb.firebaseio.com/cart.json', [])
+      commit('setLoading', false)
     }
   },
   getters: {
