@@ -12,6 +12,10 @@
       :productType="productType"
     />
   </div>
+  <Loader
+    class="loader"
+    v-if="isLoading"
+  />
 </template>
 
 <script lang="ts">
@@ -21,9 +25,11 @@ import ProductFilters from '@/components/ProductFilters.vue'
 import Products from '@/components/Products.vue'
 import { Watch as WatchDecorator } from 'vue-property-decorator/lib/decorators/Watch'
 import { Iphone, Mac, Watch } from '@/types/products'
+import Loader from '@/components/Loader.vue'
 
 @Options({
   components: {
+    Loader,
     Products,
     ProductFilters,
     CatalogOptions
@@ -59,5 +65,12 @@ export default class Catalog extends Vue {
   .main {
     max-width: 1400px;
     display: flex;
+  }
+
+  .loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 </style>
