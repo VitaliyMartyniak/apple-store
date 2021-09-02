@@ -96,7 +96,7 @@ export default {
     },
     setPageSize ({ commit, dispatch }: any, value: number) {
       commit('setPageSize', value)
-      dispatch('setupPagination', 1)
+      dispatch('setupPagination')
     },
     setProductsOrder ({ commit, dispatch }: any, order: string) {
       commit('setProductsOrder', order)
@@ -143,9 +143,7 @@ export default {
       dispatch('filterItems')
     },
     setCategoriesFromUrl ({ state, commit, dispatch }: any, urlCategories: any) {
-      console.log('urlCategories', urlCategories)
       const categories: any = { ...state.categories }
-      console.log('categories', categories)
       for (const category in categories) {
         categories[category].forEach((param: any) => {
           if (urlCategories[category] && urlCategories[category].toString().includes(param.name.toString())) {
@@ -167,6 +165,7 @@ export default {
     //   commit('setPaginatedItems', paginatedItems)
     // },
     setupPagination ({ state, commit }: any, payload: number) {
+      console.log('settuping pagination', payload)
       const items = _.chunk(state.filteredItems, state.pageSize)
       const pageCount = _.size(items)
       commit('setPageCount', pageCount)
@@ -208,9 +207,11 @@ export default {
         filteredItems = filteredItems.sort((a, b) => b.price - a.price)
       }
 
-      filteredItems = filteredItems.filter((item: Iphone | Mac | Watch) => {
-        return item.price >= state.priceRange[0] && item.price <= state.priceRange[1]
-      })
+      if (state.priceRange && state.priceRange.length) {
+        filteredItems = filteredItems.filter((item: Iphone | Mac | Watch) => {
+          return item.price >= state.priceRange[0] && item.price <= state.priceRange[1]
+        })
+      }
 
       const categories: any = { ...state.categories }
       for (const category in categories) {
@@ -228,7 +229,6 @@ export default {
       commit('setFilteredItems', filteredItems)
       if (!state.setupedFromUrl) {
         dispatch('setupPagination')
-        commit('completeSetup')
       } else {
         dispatch('setupPagination', 1)
       }

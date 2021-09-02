@@ -21,17 +21,14 @@ export default class ProductsPagination extends Vue {
     return this.$store.state.products.page
   }
 
-  @Watch('page')
-  onPropertyChanged (page: number) {
-    const query = { ...this.$route.query, page }
-    this.$router.replace({ query })
-  }
-
   get pageCount (): number {
     return this.$store.state.products.pageCount
   }
 
   changePageHandler (page: number) {
+    this.$store.commit('products/completeSetup')
+    const query = { ...this.$route.query, page }
+    this.$router.replace({ query })
     this.$store.dispatch('products/setupPagination', page)
   }
 }

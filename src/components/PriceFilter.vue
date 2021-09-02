@@ -31,7 +31,6 @@ export default {
   methods: {
     setValue () {
       if (this.$route.query.price) {
-        console.log('route.query.price', this.$route.query.price.split(',').map(item => +item))
         this.$store.dispatch('products/setPriceRange', this.$route.query.price.split(',').map(item => +item))
         this.value = this.$route.query.price.split(',').map(item => +item)
       } else {
@@ -40,19 +39,25 @@ export default {
       }
     },
     update () {
+      this.$store.commit('products/completeSetup')
       this.$store.dispatch('products/setPriceRange', this.value)
-    }
-  },
-  watch: {
-    value () {
-      // console.log('priceRange', this.priceRange)
-      // if (this.priceRange !== [0, this.maxPrice]) {
-      const query = { ...this.$route.query, price: this.value.join(',') }
+      let query = { ...this.$route.query, page: 1 }
+      query = { ...query, price: this.value.join(',') }
       this.$router.replace({ query })
-      // this.$router.push(`${this.$route.path}?price=${this.value}`)
-      // }
     }
   }
+  // watch: {
+  //   value () {
+  //     // console.log('priceRange', this.priceRange)
+  //     // if (this.priceRange !== [0, this.maxPrice]) {
+  //     if (this.setupedFromUrl) {
+  //       const query = { ...this.$route.query, price: this.value.join(',') }
+  //       this.$router.replace({ query })
+  //     }
+  //     // this.$router.push(`${this.$route.path}?price=${this.value}`)
+  //     // }
+  //   }
+  // }
 }
 </script>
 

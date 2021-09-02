@@ -69,14 +69,14 @@ export default class ProductFilters extends Vue {
     }
     if (param.checked) {
       if (!categories[categoryName]) {
-        categories[categoryName] = param.name
+        categories[categoryName] = param.name.toString()
       } else {
-        categories[categoryName] += `,${param.name}`
+        categories[categoryName] += `,${param.name.toString()}`
       }
     } else {
       categories[categoryName] = categories[categoryName]
         .split(',')
-        .filter((item: string) => item !== param.name)
+        .filter((item: string) => item !== param.name.toString())
         .join(',')
       if (!categories[categoryName]) {
         delete categories[categoryName]
@@ -90,7 +90,9 @@ export default class ProductFilters extends Vue {
     } else {
       query = { ...this.$route.query, categories: JSON.stringify(categories) }
     }
+    query = { ...query, page: 1 }
     this.$router.replace({ query })
+    this.$store.commit('products/completeSetup')
     this.$store.dispatch('products/updateCategories', this.categories)
   }
 
