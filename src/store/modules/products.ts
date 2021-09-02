@@ -72,6 +72,18 @@ export default {
         }
       })
       return result
+    },
+    minPrice (state: any) {
+      let result = 0
+      state.items.forEach((item: Iphone | Mac | Watch, index: number) => {
+        if (index === 0) {
+          result = item.price
+        }
+        if (item.price < result) {
+          result = item.price
+        }
+      })
+      return result
     }
   },
   actions: {

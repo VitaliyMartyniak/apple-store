@@ -1,9 +1,6 @@
 <template>
-  <Loader
-    v-if="isLoading"
-  />
-  <p v-if="!cartItems.length">Cart is empty</p>
-  <div class="cart" v-else>
+  <p v-if="!cartItems.length && !isLoading">Cart is empty</p>
+  <div class="cart" v-if="cartItems.length && !isLoading">
 
     <div class="cart__item"
          v-for="product of cartItems"
@@ -58,6 +55,9 @@
     </div>
 
   </div>
+  <Loader
+    v-if="isLoading"
+  />
 </template>
 
 <script lang="ts">

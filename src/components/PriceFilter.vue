@@ -1,5 +1,5 @@
 <template>
-  <slider @change="update" :max="maxPrice" v-model="value"></slider>
+  <slider @change="update" :max="maxPrice" :min="minPrice" v-model="value"></slider>
 </template>
 
 <script>
@@ -18,6 +18,9 @@ export default {
     items () {
       return this.$store.state.products.items
     },
+    minPrice () {
+      return this.$store.getters['products/minPrice']
+    },
     maxPrice () {
       return this.$store.getters['products/maxPrice']
     },
@@ -34,8 +37,8 @@ export default {
         this.$store.dispatch('products/setPriceRange', this.$route.query.price.split(',').map(item => +item))
         this.value = this.$route.query.price.split(',').map(item => +item)
       } else {
-        this.$store.dispatch('products/setPriceRange', [0, this.maxPrice])
-        this.value = [0, this.maxPrice]
+        this.$store.dispatch('products/setPriceRange', [this.minPrice, this.maxPrice])
+        this.value = [this.minPrice, this.maxPrice]
       }
     },
     update () {

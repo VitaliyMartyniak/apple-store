@@ -38,17 +38,11 @@ import SearchFilter from '@/components/SearchFilter.vue'
 
 @Options({
   components: { CartIcon, SearchFilter }
-
-  // props: {
-  //   msg: String
-  // }
 })
 export default class Header extends Vue {
-  // msg!: string
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 @import '../shared/mixins.scss';
 
@@ -68,32 +62,6 @@ export default class Header extends Vue {
     margin: 0 auto;
     justify-content: space-between;
     position: relative;
-
-    //.menu-btn {
-    //  position: absolute;
-    //
-    //  &:checked ~ .header__links {
-    //    width: 200px;
-    //    background-color: #e5e5e5;
-    //    top: 63px;
-    //    position: absolute;
-    //    max-height: 400px;
-    //  }
-    //
-    //  &:checked ~ .menu-icon .nav-icon {
-    //    background-color: transparent;
-    //  }
-    //
-    //  &:checked ~ .menu-icon .nav-icon::before {
-    //    transform: rotate(-45deg);
-    //    top: 0;
-    //  }
-    //
-    //  &:checked ~ .menu-icon .nav-icon::after {
-    //    transform: rotate(45deg);
-    //    top: 0;
-    //  }
-    //}
   }
 
   &__logo {
@@ -122,11 +90,6 @@ export default class Header extends Vue {
         color: var(--detail-color);
         background-color: #e8e8e8;
       }
-
-      //&.feedback {
-      //  margin-left: auto;
-      //  margin-right: 10px;
-      //}
     }
   }
 
@@ -135,14 +98,6 @@ export default class Header extends Vue {
     align-items: center;
   }
 }
-
-//.search-input {
-//  width: 250px;
-//  padding: 5px;
-//  border-radius: 5px;
-//  outline: none;
-//  border: 1px solid #747474;
-//}
 
 //@media (max-width: 767px) {
 //  .header {
