@@ -32,23 +32,23 @@ import { Options, Vue } from 'vue-class-component'
 export default class CatalogOptions extends Vue {
   mounted () {
     if (this.$route.query.order) {
-      this.$store.dispatch('products/setProductsOrder', this.$route.query.order)
+      this.$store.dispatch('filters/setProductsOrder', this.$route.query.order)
     }
     if (this.$route.query.pageSize) {
-      this.$store.dispatch('products/setPageSize', +this.$route.query.pageSize)
+      this.$store.dispatch('pagination/setPageSize', +this.$route.query.pageSize)
     }
   }
 
   setOrder (value: string) {
     const query = { ...this.$route.query, order: value }
     this.$router.replace({ query })
-    this.$store.dispatch('products/setProductsOrder', value)
+    this.$store.dispatch('filters/setProductsOrder', value)
   }
 
   setItemsPerPage (value: number) {
     const query = { ...this.$route.query, pageSize: value.toString() }
     this.$router.replace({ query })
-    this.$store.dispatch('products/setPageSize', value)
+    this.$store.dispatch('pagination/setPageSize', value)
   }
 }
 </script>

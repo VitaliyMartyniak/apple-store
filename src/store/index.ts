@@ -1,10 +1,16 @@
 import { createStore } from 'vuex'
-import productsModule from '@/store/modules/products'
-import cartModule from '@/store/modules/cart'
+import products from '@/store/modules/products'
+import cart from '@/store/modules/cart'
+import pagination from '@/store/modules/pagination'
+import filters from '@/store/modules/filters'
+import alert from '@/store/modules/alert'
 
 export default createStore({
   modules: {
-    products: productsModule,
-    cart: cartModule
+    alert,
+    cart,
+    filters,
+    pagination,
+    products
   }
 })

@@ -11,25 +11,24 @@
 import VPagination from '@hennge/vue3-pagination'
 import '@hennge/vue3-pagination/dist/vue3-pagination.css'
 import { Options, Vue } from 'vue-class-component'
-import { Watch } from 'vue-property-decorator/lib/decorators/Watch'
 
 @Options({
   components: { VPagination }
 })
 export default class ProductsPagination extends Vue {
   get page (): number {
-    return this.$store.state.products.page
+    return this.$store.state.pagination.page
   }
 
   get pageCount (): number {
-    return this.$store.state.products.pageCount
+    return this.$store.state.pagination.pageCount
   }
 
   changePageHandler (page: number) {
-    this.$store.commit('products/completeSetup')
+    this.$store.commit('filters/completeSetup')
     const query = { ...this.$route.query, page }
     this.$router.replace({ query })
-    this.$store.dispatch('products/setupPagination', page)
+    this.$store.dispatch('pagination/setupPagination', page)
   }
 }
 </script>

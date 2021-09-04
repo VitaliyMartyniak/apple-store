@@ -15,11 +15,11 @@ import { Options, Vue } from 'vue-class-component'
 })
 export default class SearchFilter extends Vue {
   get searchFilter (): string {
-    return this.$store.state.products.searchFilter
+    return this.$store.state.filters.searchFilter
   }
 
   searchProducts (value: string): void {
-    this.$store.dispatch('products/searchProductsByText', value.toLowerCase())
+    this.$store.dispatch('filters/searchProductsByText', value.toLowerCase())
   }
 }
 </script>

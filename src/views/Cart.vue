@@ -97,7 +97,7 @@ export default class Cart extends Vue {
 
   submitOrder (): void {
     this.$store.dispatch('cart/submitOrder')
-    this.$store.commit('products/setAlertText', 'Thank`s for your order!')
+    this.$store.commit('alert/setAlertText', 'Thank`s for your order!')
   }
 }
 </script>

@@ -40,7 +40,7 @@ export default class Catalog extends Vue {
   onUrlChange (newRoute: any) {
     if ((!this.path || this.path !== newRoute.params.productType) && newRoute.name === 'Catalog') {
       this.$store.dispatch('cart/getCartList')
-      this.$store.commit('products/setCategories', {})
+      this.$store.commit('filters/setCategories', {})
       this.$store.dispatch('products/loadAll', newRoute)
       this.path = newRoute.params.productType
     }
@@ -55,7 +55,7 @@ export default class Catalog extends Vue {
   }
 
   get products (): Iphone[] | Mac[] | Watch[] {
-    return this.$store.state.products.paginatedItems
+    return this.$store.state.pagination.paginatedItems
   }
 }
 </script>

@@ -51,15 +51,15 @@ import _ from 'lodash'
 })
 export default class ProductFilters extends Vue {
   mounted () {
-    this.$store.dispatch('products/formCategories')
+    this.$store.dispatch('filters/formCategories')
     if (this.$route.query.categories) {
       const categories = JSON.parse(this.$route.query.categories.toString())
-      this.$store.dispatch('products/setCategoriesFromUrl', categories)
+      this.$store.dispatch('filters/setCategoriesFromUrl', categories)
     }
   }
 
   get categories (): any {
-    return this.$store.state.products.categories
+    return this.$store.state.filters.categories
   }
 
   updateUrlCategories (categoryName: string, param: any): any {
@@ -92,8 +92,8 @@ export default class ProductFilters extends Vue {
     }
     query = { ...query, page: 1 }
     this.$router.replace({ query })
-    this.$store.commit('products/completeSetup')
-    this.$store.dispatch('products/updateCategories', this.categories)
+    this.$store.commit('filters/completeSetup')
+    this.$store.dispatch('filters/updateCategories', this.categories)
   }
 
   capitalise (word : string): string {

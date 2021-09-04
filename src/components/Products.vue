@@ -29,7 +29,7 @@ export default class Products extends Vue {
   productType!: ProductType
 
   get products (): Iphone[] | Mac[] | Watch[] {
-    return this.$store.state.products.paginatedItems
+    return this.$store.state.pagination.paginatedItems
   }
 
   get isLoading (): boolean {

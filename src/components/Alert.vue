@@ -18,12 +18,12 @@ export default class Alert extends Vue {
   onUrlChange () {
     clearTimeout(this.timeout)
     this.timeout = setTimeout(() => {
-      this.$store.commit('products/setAlertText', '')
+      this.$store.commit('alert/setAlertText', '')
     }, 2500)
   }
 
   get text (): string {
-    return this.$store.state.products.alertText
+    return this.$store.state.alert.alertText
   }
 }
 </script>

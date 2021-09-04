@@ -55,22 +55,22 @@ export default class SingleProduct extends Vue {
     return this.$route.params.productType
   }
 
-  get products (): Array<Iphone | Mac | Watch> {
-    return this.$store.state.products.items
-  }
-
   get product (): Iphone | Mac | Watch | undefined {
-    return this.products.find((e: Iphone | Mac | Watch) => e.id === this.$route.params.id)
+    return this.$store.state.products.singleProduct
   }
 
   mounted () {
-    this.$store.dispatch('products/getItems', this.productType)
+    this.$store.dispatch('products/loadSingleProduct', { productType: this.productType, id: this.$route.params.id })
+  }
+
+  unmounted () {
+    this.$store.commit('products/setSingleProduct', null)
   }
 
   addItem (product: Iphone | Mac | Watch) {
     const selectedProduct = { ...product, productType: this.productType }
     this.$store.dispatch('cart/addProduct', selectedProduct)
-    this.$store.commit('products/setAlertText', 'Product added to cart')
+    this.$store.commit('alert/setAlertText', 'Product added to cart')
   }
 }
 </script>
