@@ -15,8 +15,8 @@
       <li class="menu__item">Show
         <section class="dropdown">
           <ul class="dropdown__menu">
-            <li class="dropdown__item" @click="setItemsPerPage(9)">9 items</li>
-            <li class="dropdown__item" @click="setItemsPerPage(18)">18 items</li>
+            <li class="dropdown__item" @click="setProductsPerPage(9)">9 products</li>
+            <li class="dropdown__item" @click="setProductsPerPage(18)">18 products</li>
           </ul>
         </section>
       </li>
@@ -30,7 +30,7 @@ import { Options, Vue } from 'vue-class-component'
 @Options({
 })
 export default class CatalogOptions extends Vue {
-  mounted () {
+  mounted (): void {
     if (this.$route.query.order) {
       this.$store.dispatch('filters/setProductsOrder', this.$route.query.order)
     }
@@ -39,16 +39,16 @@ export default class CatalogOptions extends Vue {
     }
   }
 
-  setOrder (value: string) {
-    const query = { ...this.$route.query, order: value }
+  setOrder (order: string): void {
+    const query = { ...this.$route.query, order }
     this.$router.replace({ query })
-    this.$store.dispatch('filters/setProductsOrder', value)
+    this.$store.dispatch('filters/setProductsOrder', order)
   }
 
-  setItemsPerPage (value: number) {
-    const query = { ...this.$route.query, pageSize: value.toString() }
+  setProductsPerPage (pageSize: number) {
+    const query = { ...this.$route.query, pageSize: pageSize.toString() }
     this.$router.replace({ query })
-    this.$store.dispatch('pagination/setPageSize', value)
+    this.$store.dispatch('pagination/setPageSize', pageSize)
   }
 }
 </script>

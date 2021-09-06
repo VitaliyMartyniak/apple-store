@@ -41,7 +41,7 @@
           <li class="menu__item"><span class="item__parameter">Price:</span> {{product.price}} $</li>
         </ul>
       </div>
-      <button class="btn" @click="addItem(product)">Add to Cart</button>
+      <button class="btn" @click="addProduct(product)">Add to Cart</button>
     </div>
   </div>
 </template>
@@ -67,7 +67,7 @@ export default class SingleProduct extends Vue {
     this.$store.commit('products/setSingleProduct', null)
   }
 
-  addItem (product: Iphone | Mac | Watch) {
+  addProduct (product: Iphone | Mac | Watch) {
     const selectedProduct = { ...product, productType: this.productType }
     this.$store.dispatch('cart/addProduct', selectedProduct)
     this.$store.commit('alert/setAlertText', 'Product added to cart')

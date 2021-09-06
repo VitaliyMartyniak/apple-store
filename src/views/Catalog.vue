@@ -55,7 +55,7 @@ export default class Catalog extends Vue {
   }
 
   get products (): Iphone[] | Mac[] | Watch[] {
-    return this.$store.state.pagination.paginatedItems
+    return this.$store.state.pagination.paginatedProducts
   }
 }
 </script>

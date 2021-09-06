@@ -15,9 +15,6 @@ export default {
     }
   },
   computed: {
-    items () {
-      return this.$store.state.products.items
-    },
     minPrice () {
       return this.$store.getters['products/minPrice']
     },

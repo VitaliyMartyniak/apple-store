@@ -1,11 +1,13 @@
+import { AlertState } from '@/types/store'
+
 export default {
   namespaced: true,
   state: {
     alertText: ''
   },
   mutations: {
-    setAlertText (state: any, value: string) {
-      state.alertText = value
+    setAlertText (state: AlertState, text: string) {
+      state.alertText = text
     }
   }
 }

@@ -28,7 +28,7 @@
 
     <hr/>
     <h3 class='item__price'>{{product.price}} $</h3>
-    <button class='btn' @click='addItem(product)'>Add to Cart</button>
+    <button class='btn' @click='addProduct(product)'>Add to Cart</button>
   </div>
 </template>
 
@@ -46,7 +46,7 @@ export default class ProductCard extends Vue {
   productType!: ProductType
   product!: Iphone | Mac | Watch
 
-  addItem (product: Iphone | Mac | Watch) {
+  addProduct (product: Iphone | Mac | Watch) {
     const selectedProduct = { ...product, productType: this.productType }
     this.$store.dispatch('cart/addProduct', selectedProduct)
     this.$store.commit('alert/setAlertText', 'Product added to cart')

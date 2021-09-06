@@ -1,5 +1,7 @@
 import { Iphone, Mac, Watch } from '@/types/products'
 import _ from 'lodash'
+import { PaginationState, RootState } from '@/types/store'
+import { ActionContext } from 'vuex'
 
 export default {
   namespaced: true,
@@ -7,45 +9,45 @@ export default {
     page: 1,
     pageSize: 9,
     pageCount: 0,
-    paginatedItems: []
+    paginatedProducts: []
   },
   mutations: {
-    setPage (state: any, value: number) {
-      state.page = value
+    setPage (state: PaginationState, page: number) {
+      state.page = page
     },
-    setPageCount (state: any, value: number) {
-      state.pageCount = value
+    setPageCount (state: PaginationState, pageCount: number) {
+      state.pageCount = pageCount
     },
-    setPaginatedItems (state: any, items: Iphone[] | Mac[] | Watch[]) {
-      state.paginatedItems = items
+    setPaginatedProducts (state: PaginationState, products: Iphone[] | Mac[] | Watch[]) {
+      state.paginatedProducts = products
     },
-    setPageSize (state: any, value: number) {
-      state.pageSize = value
+    setPageSize (state: PaginationState, pageSize: number) {
+      state.pageSize = pageSize
     }
   },
   actions: {
-    setPageSize ({ commit, dispatch }: any, value: number) {
-      commit('setPageSize', value)
+    setPageSize ({ commit, dispatch }: ActionContext<PaginationState, RootState>, pageSize: number) {
+      commit('setPageSize', pageSize)
       dispatch('setupPagination')
     },
     // changePage ({ state, commit }: any, payload: number) {
-    //   const items = _.chunk(state.items, state.pageSize)
-    //   const paginatedItems = items[payload - 1] || items[0]
+    //   const products = _.chunk(state.products, state.pageSize)
+    //   const paginatedProducts = products[payload - 1] || products[0]
     //   commit('setPage', payload)
-    //   commit('setPaginatedItems', paginatedItems)
+    //   commit('setPaginatedProducts', paginatedProducts)
     // },
-    setupPagination ({ state, commit, rootState }: any, payload: number) {
-      const items = _.chunk(rootState.filters.filteredItems, state.pageSize)
-      const pageCount = _.size(items)
+    setupPagination ({ state, commit, rootState }: ActionContext<PaginationState, RootState>, page: number) {
+      const products = _.chunk(rootState.filters.filteredProducts, state.pageSize)
+      const pageCount = _.size(products)
       commit('setPageCount', pageCount)
-      let paginatedItems = []
-      if (payload) {
-        commit('setPage', payload)
-        paginatedItems = items[payload - 1]
+      let paginatedProducts = []
+      if (page) {
+        commit('setPage', page)
+        paginatedProducts = products[page - 1]
       } else {
-        paginatedItems = items[state.page - 1]
+        paginatedProducts = products[state.page - 1]
       }
-      commit('setPaginatedItems', paginatedItems)
+      commit('setPaginatedProducts', paginatedProducts)
     }
   }
 }

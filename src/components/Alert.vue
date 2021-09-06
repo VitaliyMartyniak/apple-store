@@ -15,7 +15,7 @@ import { Watch } from 'vue-property-decorator/lib/decorators/Watch'
 export default class Alert extends Vue {
   timeout = 0
   @Watch('text')
-  onUrlChange () {
+  onUrlChange (): void {
     clearTimeout(this.timeout)
     this.timeout = setTimeout(() => {
       this.$store.commit('alert/setAlertText', '')

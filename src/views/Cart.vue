@@ -1,9 +1,9 @@
 <template>
-  <p v-if="!cartItems.length && !isLoading">Cart is empty</p>
-  <div class="cart" v-if="cartItems.length && !isLoading">
+  <p v-if="!cartProducts.length && !isLoading">Cart is empty</p>
+  <div class="cart" v-if="cartProducts.length && !isLoading">
 
     <div class="cart__item"
-         v-for="product of cartItems"
+         v-for="product of cartProducts"
          :key='product.id'
     >
 
@@ -75,8 +75,8 @@ export default class Cart extends Vue {
     return this.$store.state.cart.isLoading
   }
 
-  get cartItems (): any {
-    return this.$store.state.cart.items
+  get cartProducts (): any {
+    return this.$store.state.cart.products
   }
 
   get totalSum (): number {

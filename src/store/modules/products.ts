@@ -1,54 +1,56 @@
 import { Iphone, Mac, Watch } from '@/types/products'
 import axios from 'axios'
+import { ProductsState, RootState } from '@/types/store'
+import { ActionContext } from 'vuex'
 
 export default {
   namespaced: true,
   state: {
-    items: [],
+    products: [],
     singleProduct: null,
     isLoading: true
   },
   mutations: {
-    setItems (state: any, items: Iphone[] | Mac[] | Watch[]) {
-      state.items = items
+    setProducts (state: ProductsState, products: Iphone[] | Mac[] | Watch[]) {
+      state.products = products
     },
-    setSingleProduct (state: any, item: Iphone | Mac | Watch) {
-      state.singleProduct = item
+    setSingleProduct (state: ProductsState, product: Iphone | Mac | Watch) {
+      state.singleProduct = product
     },
-    setLoading (state: any, value: boolean) {
-      state.isLoading = value
+    setLoading (state: ProductsState, isLoading: boolean) {
+      state.isLoading = isLoading
     }
   },
   getters: {
-    maxPrice (state: any) {
+    maxPrice (state: ProductsState) {
       let result = 1
-      state.items.forEach((item: Iphone | Mac | Watch) => {
-        if (item.price > result) {
-          result = item.price
+      state.products.forEach((product: Iphone | Mac | Watch) => {
+        if (product.price > result) {
+          result = product.price
         }
       })
       return result
     },
-    minPrice (state: any) {
+    minPrice (state: ProductsState) {
       let result = 0
-      state.items.forEach((item: Iphone | Mac | Watch, index: number) => {
+      state.products.forEach((product: Iphone | Mac | Watch, index: number) => {
         if (index === 0) {
-          result = item.price
+          result = product.price
         }
-        if (item.price < result) {
-          result = item.price
+        if (product.price < result) {
+          result = product.price
         }
       })
       return result
     }
   },
   actions: {
-    loadAll ({ commit, dispatch }: any, route: any) {
+    loadAll ({ commit, dispatch }: ActionContext<ProductsState, RootState>, route: any) {
       commit('setLoading', true)
       axios.get(`https://apple-store-vue3-default-rtdb.firebaseio.com/${route.params.productType}.json`).then(response => {
         if (response.data.length) {
-          commit('setItems', response.data)
-          commit('filters/setFilteredItems', response.data, { root: true })
+          commit('setProducts', response.data)
+          commit('filters/setFilteredProducts', response.data, { root: true })
           if (route.query.page) {
             dispatch('pagination/setupPagination', +route.query.page, { root: true })
           } else {
@@ -58,11 +60,11 @@ export default {
         }
       })
     },
-    loadSingleProduct ({ commit }: any, { productType, id }: any) {
+    loadSingleProduct ({ commit }: ActionContext<ProductsState, RootState>, { productType, id }: any) {
       commit('setLoading', true)
       axios.get(`https://apple-store-vue3-default-rtdb.firebaseio.com/${productType}.json`).then(response => {
         if (response.data.length) {
-          const singleProduct = response.data.find((e: Iphone | Mac | Watch) => e.id === id)
+          const singleProduct = response.data.find((product: Iphone | Mac | Watch) => product.id === id)
           commit('setSingleProduct', singleProduct)
         }
         commit('setLoading', false)

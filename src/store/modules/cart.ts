@@ -1,94 +1,96 @@
 import { Iphone, Mac, Watch } from '@/types/products'
 import axios from 'axios'
+import { CartState, RootState } from '@/types/store'
+import { ActionContext } from 'vuex'
 
 export default {
   namespaced: true,
   state: {
-    items: [],
+    products: [],
     isLoading: true
   },
   mutations: {
-    setLoading (state: any, value: boolean) {
-      state.isLoading = value
+    setLoading (state: CartState, isLoading: boolean) {
+      state.isLoading = isLoading
     },
-    setItems (state: any, items: Iphone[] | Mac[] | Watch[]) {
-      state.items = items
+    setProducts (state: CartState, products: Iphone[] | Mac[] | Watch[]) {
+      state.products = products
     },
-    addItem (state: any, item: Iphone | Mac | Watch) {
-      state.items.push(item)
+    addProduct (state: CartState, product: Iphone | Mac | Watch) {
+      state.products.push(product)
     },
-    addExistingItem (state: any, id: string) {
-      const index = state.items.findIndex((item: Iphone | Mac | Watch) => item.id === id)
-      state.items[index].countInCart++
+    addExistingProduct (state: CartState, id: string) {
+      const index = state.products.findIndex((product: Iphone | Mac | Watch) => product.id === id)
+      state.products[index].countInCart!++
     }
   },
   actions: {
-    addProduct ({ commit, state, dispatch }: any, product: Iphone | Mac | Watch) {
-      const existingItem = state.items.find((item: Iphone | Mac | Watch) => item.id === product.id)
-      if (!existingItem) {
+    addProduct ({ commit, state, dispatch }: ActionContext<CartState, RootState>, product: Iphone | Mac | Watch) {
+      const existingProduct = state.products.find((e: Iphone | Mac | Watch) => e.id === product.id)
+      if (!existingProduct) {
         product.countInCart = 1
-        commit('addItem', product)
+        commit('addProduct', product)
       } else {
-        commit('addExistingItem', existingItem.id)
+        commit('addExistingProduct', existingProduct.id)
       }
       dispatch('updateCartList')
     },
 
-    changeProductCount ({ commit, state, dispatch }: any, product: Iphone | Mac | Watch) {
-      const neededItemIndex = state.items.findIndex((item: Iphone | Mac | Watch) => item.id === product.id)
-      const products = state.items
-      products[neededItemIndex] = product
-      commit('setItems', products)
+    changeProductCount ({ commit, state, dispatch }: ActionContext<CartState, RootState>, product: Iphone | Mac | Watch) {
+      const neededProductIndex = state.products.findIndex((e: Iphone | Mac | Watch) => e.id === product.id)
+      const products = state.products
+      products[neededProductIndex] = product
+      commit('setProducts', products)
       dispatch('updateCartList')
     },
 
-    deleteProduct ({ commit, state, dispatch }: any, id: string) {
-      const clearedItems = state.items.filter((item: Iphone | Mac | Watch) => item.id !== id)
-      commit('setItems', clearedItems)
+    deleteProduct ({ commit, state, dispatch }: ActionContext<CartState, RootState>, id: string) {
+      const clearedProducts = state.products.filter((product: Iphone | Mac | Watch) => product.id !== id)
+      commit('setProducts', clearedProducts)
       dispatch('updateCartList')
     },
 
-    getCartList ({ commit }: any) {
+    getCartList ({ commit }: ActionContext<CartState, RootState>) {
       commit('setLoading', true)
       axios.get('https://apple-store-vue3-default-rtdb.firebaseio.com/cart.json').then(response => {
         if (!response.data) {
-          commit('setItems', [])
+          commit('setProducts', [])
         } else {
-          commit('setItems', response.data)
+          commit('setProducts', response.data)
         }
         commit('setLoading', false)
       })
     },
 
-    updateCartList ({ state, commit }: any) {
+    updateCartList ({ state, commit }: ActionContext<CartState, RootState>) {
       commit('setLoading', true)
-      axios.put('https://apple-store-vue3-default-rtdb.firebaseio.com/cart.json', state.items)
+      axios.put('https://apple-store-vue3-default-rtdb.firebaseio.com/cart.json', state.products)
       commit('setLoading', false)
     },
 
-    submitOrder ({ commit }: any) {
+    submitOrder ({ commit }: ActionContext<CartState, RootState>) {
       commit('setLoading', true)
-      commit('setItems', [])
+      commit('setProducts', [])
       axios.put('https://apple-store-vue3-default-rtdb.firebaseio.com/cart.json', [])
       commit('setLoading', false)
     }
   },
   getters: {
-    counter (state: any) {
+    counter (state: CartState) {
       let counter = 0
-      if (state.items.length) {
-        state.items.forEach((item: Iphone | Mac | Watch) => {
-          counter += item.countInCart!
+      if (state.products.length) {
+        state.products.forEach((product: Iphone | Mac | Watch) => {
+          counter += product.countInCart!
         })
       }
       return counter
     },
 
-    totalSum (state: any) {
+    totalSum (state: CartState) {
       let total = 0
-      if (state.items.length) {
-        state.items.forEach((item: Iphone | Mac | Watch) => {
-          total += item.price * item.countInCart!
+      if (state.products.length) {
+        state.products.forEach((product: Iphone | Mac | Watch) => {
+          total += product.price * product.countInCart!
         })
       }
       return total
