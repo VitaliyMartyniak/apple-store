@@ -3,7 +3,7 @@
     <nav class="header__navbar">
       <router-link
         class="header__logo"
-        :to="{ name: 'Catalog', params: { productType: 'iphone' } }"
+        :to="{ name: 'Home' }"
       >
         <i class="fab fa-apple" />
       </router-link>

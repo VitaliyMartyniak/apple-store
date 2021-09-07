@@ -83,10 +83,6 @@ export default class Cart extends Vue {
     return this.$store.getters['cart/totalSum']
   }
 
-  mounted (): void {
-    this.$store.dispatch('cart/getCartList')
-  }
-
   changeProductCount (product: Iphone | Mac | Watch) {
     this.$store.dispatch('cart/changeProductCount', product)
   }

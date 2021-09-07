@@ -1,5 +1,5 @@
 <template>
-  <div class="item" v-if="product">
+  <div class="item" v-if="product && !isLoading">
     <div class="item__photo">
       <img :src="require(`@/assets/img/${productType}/${product.photo}.jpg`)" alt="{{product.model}}"/>
     </div>
@@ -44,12 +44,21 @@
       <button class="btn" @click="addProduct(product)">Add to Cart</button>
     </div>
   </div>
+  <Loader
+    v-if="isLoading"
+  />
 </template>
 
 <script lang='ts'>
-import { Vue } from 'vue-class-component'
+import { Options, Vue } from 'vue-class-component'
 import { Iphone, Mac, Watch } from '@/types/products'
+import Loader from '@/components/Loader.vue'
 
+@Options({
+  components: {
+    Loader
+  }
+})
 export default class SingleProduct extends Vue {
   get productType (): string | string[] {
     return this.$route.params.productType
@@ -57,6 +66,10 @@ export default class SingleProduct extends Vue {
 
   get product (): Iphone | Mac | Watch | undefined {
     return this.$store.state.products.singleProduct
+  }
+
+  get isLoading (): boolean {
+    return this.$store.state.products.isLoading
   }
 
   mounted () {

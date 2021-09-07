@@ -20,7 +20,11 @@ import Alert from '@/components/Alert.vue'
     Header
   }
 })
-export default class Layout extends Vue {}
+export default class Layout extends Vue {
+  mounted (): void {
+    this.$store.dispatch('cart/getCartList')
+  }
+}
 </script>
 
 <style scoped lang="scss">

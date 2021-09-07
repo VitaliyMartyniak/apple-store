@@ -9,14 +9,19 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: '/',
-        redirect: '/catalog/iphone'
+        redirect: '/home'
+      },
+      {
+        path: '/home',
+        name: 'Home',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
       },
       {
         path: '/catalog/:productType',
         name: 'Catalog',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
         component: () => import(/* webpackChunkName: "catalog" */ '../views/Catalog.vue')
       },
       {

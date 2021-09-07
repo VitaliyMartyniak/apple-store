@@ -1,5 +1,6 @@
 <template>
   <input
+    v-if="$route.path.includes('catalog')"
     class="search-input"
     type="text"
     placeholder="I'm looking for..."
