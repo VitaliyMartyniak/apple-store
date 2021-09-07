@@ -4,6 +4,7 @@
     class="search-input"
     type="text"
     placeholder="I'm looking for..."
+    :value="searchFilter"
     @input="searchProducts($event.target.value)"
   />
 </template>
@@ -19,7 +20,22 @@ export default class SearchFilter extends Vue {
     return this.$store.state.filters.searchFilter
   }
 
+  mounted (): void {
+    if (this.$route.query.text) {
+      this.$store.dispatch('filters/searchProductsByText', this.$route.query.text.toString().toLowerCase())
+    }
+  }
+
   searchProducts (value: string): void {
+    let query
+    if (value) {
+      query = { ...this.$route.query, text: value }
+    } else {
+      const queryWithoutText = { ...this.$route.query }
+      delete queryWithoutText.text
+      query = { ...queryWithoutText }
+    }
+    this.$router.replace({ query })
     this.$store.dispatch('filters/searchProductsByText', value.toLowerCase())
   }
 }

@@ -39,6 +39,7 @@ export default class Catalog extends Vue {
   @WatchDecorator('$route', { immediate: true, deep: true })
   onUrlChange (newRoute: any) {
     if ((!this.path || this.path !== newRoute.params.productType) && newRoute.name === 'Catalog') {
+      this.$store.commit('filters/setSearchFilter', '')
       this.$store.commit('filters/setCategories', {})
       this.$store.dispatch('products/loadAll', newRoute)
       this.path = newRoute.params.productType
