@@ -77,8 +77,8 @@ export default {
       })
       commit('setCategories', categories)
     },
-    updateCategories ({ commit, dispatch }: ActionContext<FiltersState, RootState>, categories: IphoneCategories | MacCategories | WatchCategories) {
-      commit('setCategories', categories)
+    updateCategories ({ state, commit, dispatch }: ActionContext<FiltersState, RootState>) {
+      commit('setCategories', state.categories)
       dispatch('filterProducts')
     },
     setCategoriesFromUrl ({ state, commit, dispatch }: ActionContext<FiltersState, RootState>, urlCategories: any) {

@@ -75,7 +75,7 @@ export default class Cart extends Vue {
     return this.$store.state.cart.isLoading
   }
 
-  get cartProducts (): any {
+  get cartProducts (): (Iphone|Mac|Watch)[] {
     return this.$store.state.cart.products
   }
 

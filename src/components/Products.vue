@@ -8,7 +8,7 @@
     />
 
     <div class="pagination">
-      <Pagination />
+      <ProductsPagination />
     </div>
   </div>
 </template>
@@ -17,10 +17,10 @@
 import { Options, Vue } from 'vue-class-component'
 import ProductCard from '@/components/ProductCard.vue'
 import { Iphone, Mac, ProductType, Watch } from '@/types/products'
-import Pagination from '@/components/ProductsPagination.vue'
+import ProductsPagination from '@/components/ProductsPagination.vue'
 
 @Options({
-  components: { Pagination, ProductCard },
+  components: { ProductsPagination, ProductCard },
   props: {
     productType: String
   }

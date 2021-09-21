@@ -45,6 +45,7 @@
 import { Options, Vue } from 'vue-class-component'
 import PriceFilter from '@/components/PriceFilter.vue'
 import _ from 'lodash'
+import { Paramether } from '@/types/filters'
 
 @Options({
   components: { PriceFilter }
@@ -62,7 +63,7 @@ export default class ProductFilters extends Vue {
     return this.$store.state.filters.categories
   }
 
-  updateUrlCategories (categoryName: string, param: any): any {
+  updateUrlCategories (categoryName: string, param: Paramether): any {
     let categories: any = {}
     if (this.$route.query.categories) {
       categories = JSON.parse(this.$route.query.categories.toString())
@@ -93,7 +94,7 @@ export default class ProductFilters extends Vue {
     query = { ...query, page: 1 }
     this.$router.replace({ query })
     this.$store.commit('filters/completeSetup')
-    this.$store.dispatch('filters/updateCategories', this.categories)
+    this.$store.dispatch('filters/updateCategories')
   }
 
   capitalise (word : string): string {

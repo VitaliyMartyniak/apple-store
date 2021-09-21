@@ -35,6 +35,7 @@ export default class SearchFilter extends Vue {
       delete queryWithoutText.text
       query = { ...queryWithoutText }
     }
+    query = { ...query, page: 1 }
     this.$router.replace({ query })
     this.$store.dispatch('filters/searchProductsByText', value.toLowerCase())
   }
