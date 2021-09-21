@@ -35,9 +35,9 @@ import Loader from '@/components/Loader.vue'
   }
 })
 export default class Catalog extends Vue {
-  path: any = null
+  path: null | string = null
   @WatchDecorator('$route', { immediate: true, deep: true })
-  onUrlChange (newRoute: any) {
+  onUrlChange (newRoute: { params: { productType: string | null }, name: string, query: { page: number } }) {
     if ((!this.path || this.path !== newRoute.params.productType) && newRoute.name === 'Catalog') {
       this.$store.commit('filters/setSearchFilter', '')
       this.$store.commit('filters/setCategories', {})

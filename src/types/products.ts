@@ -1,6 +1,7 @@
 export type ProductType = 'iphone'|'mac'|'watch'
 
-export type Iphone = {
+export interface Iphone {
+  [k: string]: string | number | undefined;
   model: string;
   memory: number;
   color: string;
@@ -13,7 +14,8 @@ export type Iphone = {
   id?: string;
 }
 
-export type Mac = {
+export interface Mac {
+  [k: string]: string | number | undefined;
   model: string;
   diagonal: string;
   memory: string;
@@ -26,7 +28,8 @@ export type Mac = {
   id?: string;
 }
 
-export type Watch = {
+export interface Watch {
+  [k: string]: string | number | undefined;
   generation: string;
   model: string;
   size: number;

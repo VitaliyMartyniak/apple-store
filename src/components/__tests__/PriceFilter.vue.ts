@@ -92,10 +92,6 @@ describe('PriceFilter.vue', () => {
     })
 
     vm = wrapper.vm
-    // let query = { ...vm.$route.query }
-    // query = { ...query, price: '349,1449' }
-    // vm.$router.replace({ query })
-    // vm.$route.query.price = '349,1449'
     await nextTick()
     expect(vm.value).toEqual([349, 1449])
     expect(store.dispatch).toBeCalledWith('filters/setPriceRange', [349, 1449])

@@ -39,25 +39,13 @@ export default {
       }
     },
     update () {
-      this.$store.commit('filters/completeSetup')
+      this.$store.commit('filters/makeChanges')
       this.$store.dispatch('filters/setPriceRange', this.value)
       let query = { ...this.$route.query, page: 1 }
       query = { ...query, price: this.value.join(',') }
       this.$router.replace({ query })
     }
   }
-  // watch: {
-  //   value () {
-  //     // console.log('priceRange', this.priceRange)
-  //     // if (this.priceRange !== [0, this.maxPrice]) {
-  //     if (this.setupedFromUrl) {
-  //       const query = { ...this.$route.query, price: this.value.join(',') }
-  //       this.$router.replace({ query })
-  //     }
-  //     // this.$router.push(`${this.$route.path}?price=${this.value}`)
-  //     // }
-  //   }
-  // }
 }
 </script>
 

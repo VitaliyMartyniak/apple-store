@@ -30,12 +30,6 @@ export default {
       commit('setPageSize', pageSize)
       dispatch('setupPagination')
     },
-    // changePage ({ state, commit }: any, payload: number) {
-    //   const products = _.chunk(state.products, state.pageSize)
-    //   const paginatedProducts = products[payload - 1] || products[0]
-    //   commit('setPage', payload)
-    //   commit('setPaginatedProducts', paginatedProducts)
-    // },
     setupPagination ({ state, commit, rootState }: ActionContext<PaginationState, RootState>, page: number) {
       const products = _.chunk(rootState.filters.filteredProducts, state.pageSize)
       const pageCount = _.size(products)

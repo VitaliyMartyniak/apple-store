@@ -78,6 +78,6 @@ describe('SearchFilter.vue', () => {
 
   it('should remove text field from query if user deletes everything from search field', () => {
     vm.searchProducts('')
-    expect(vm.$router.replace).toBeCalledWith({ query: {page: 1} })
+    expect(vm.$router.replace).toBeCalledWith({ query: { page: 1 } })
   })
 })

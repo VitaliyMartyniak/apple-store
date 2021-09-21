@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
 import { createStore } from 'vuex'
 import Alert from '@/components/Alert.vue'
-import {nextTick} from "vue";
+import { nextTick } from 'vue'
 
 describe('Alert.vue', () => {
   let store: any

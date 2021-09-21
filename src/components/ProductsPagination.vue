@@ -25,7 +25,7 @@ export default class ProductsPagination extends Vue {
   }
 
   changePageHandler (page: number) {
-    this.$store.commit('filters/completeSetup')
+    this.$store.commit('filters/makeChanges')
     const query = { ...this.$route.query, page }
     this.$router.replace({ query })
     this.$store.dispatch('pagination/setupPagination', page)

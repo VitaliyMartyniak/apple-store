@@ -16,14 +16,14 @@ export interface FiltersState {
   categories: IphoneCategories | MacCategories | WatchCategories,
   productsOrder: string,
   searchFilter: string,
-  setupedFromUrl: boolean
+  userMadeChages: boolean
 }
 
 export interface PaginationState {
+  paginatedProducts: Iphone[] | Mac[] | Watch[],
   page: number,
   pageSize: number,
-  pageCount: number,
-  paginatedProducts: Iphone[] | Mac[] | Watch[]
+  pageCount: number
 }
 
 export interface ProductsState {

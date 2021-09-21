@@ -3,6 +3,8 @@ import axios from 'axios'
 import { ProductsState, RootState } from '@/types/store'
 import { ActionContext } from 'vuex'
 
+const baseUrl = 'https://apple-store-vue3-default-rtdb.firebaseio.com'
+
 export default {
   namespaced: true,
   state: {
@@ -45,9 +47,10 @@ export default {
     }
   },
   actions: {
-    loadAll ({ commit, dispatch }: ActionContext<ProductsState, RootState>, route: any) {
+    loadAll ({ commit, dispatch }: ActionContext<ProductsState, RootState>,
+      route: { params: { productType: string | null }, name: string, query: { page: number } }) {
       commit('setLoading', true)
-      axios.get(`https://apple-store-vue3-default-rtdb.firebaseio.com/${route.params.productType}.json`).then(response => {
+      axios.get(`${baseUrl}/${route.params.productType}.json`).then(response => {
         if (response.data.length) {
           commit('setProducts', response.data)
           commit('filters/setFilteredProducts', response.data, { root: true })
@@ -62,7 +65,7 @@ export default {
     },
     loadSingleProduct ({ commit }: ActionContext<ProductsState, RootState>, { productType, id }: any) {
       commit('setLoading', true)
-      axios.get(`https://apple-store-vue3-default-rtdb.firebaseio.com/${productType}.json`).then(response => {
+      axios.get(`${baseUrl}/${productType}.json`).then(response => {
         if (response.data.length) {
           const singleProduct = response.data.find((product: Iphone | Mac | Watch) => product.id === id)
           commit('setSingleProduct', singleProduct)

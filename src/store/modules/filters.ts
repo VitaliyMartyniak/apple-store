@@ -1,5 +1,5 @@
 import { Iphone, Mac, Watch } from '@/types/products'
-import { IphoneCategories, MacCategories, Paramether, WatchCategories } from '@/types/filters'
+import { IphoneCategories, MacCategories, Parameter, UrlCategories, WatchCategories } from '@/types/filters'
 import { FiltersState, RootState } from '@/types/store'
 import { ActionContext } from 'vuex'
 
@@ -11,7 +11,7 @@ export default {
     categories: {},
     productsOrder: '',
     searchFilter: '',
-    setupedFromUrl: false
+    userMadeChages: false
   },
   mutations: {
     setFilteredProducts (state: FiltersState, products: Iphone[] | Mac[] | Watch[]) {
@@ -29,8 +29,8 @@ export default {
     setSearchFilter (state: FiltersState, searchValue: string) {
       state.searchFilter = searchValue
     },
-    completeSetup (state: FiltersState) {
-      state.setupedFromUrl = true
+    makeChanges (state: FiltersState) {
+      state.userMadeChages = true
     }
   },
   actions: {
@@ -55,10 +55,10 @@ export default {
         }
       }
 
-      possibleCategories.forEach((categoryName: any) => {
+      possibleCategories.forEach((categoryName: string) => {
         let parameterArray: string[] = []
-        rootState.products.products.forEach((product: any) => {
-          parameterArray.push(product[categoryName])
+        rootState.products.products.forEach((product: Iphone | Mac | Watch) => {
+          parameterArray.push(product[categoryName]!.toString())
         })
         parameterArray = [...new Set(parameterArray)]
 
@@ -81,11 +81,11 @@ export default {
       commit('setCategories', state.categories)
       dispatch('filterProducts')
     },
-    setCategoriesFromUrl ({ state, commit, dispatch }: ActionContext<FiltersState, RootState>, urlCategories: any) {
-      const categories: any = { ...state.categories }
+    setCategoriesFromUrl ({ state, commit, dispatch }: ActionContext<FiltersState, RootState>, urlCategories: UrlCategories) {
+      const categories: IphoneCategories | MacCategories | WatchCategories = { ...state.categories }
       for (const category in categories) {
-        categories[category].forEach((param: any) => {
-          if (urlCategories[category] && urlCategories[category].toString().includes(param.name.toString())) {
+        categories[category].forEach((param: Parameter) => {
+          if (urlCategories[category] && urlCategories[category]?.toString().includes(param.name.toString())) {
             param.checked = true
           }
         })
@@ -98,18 +98,18 @@ export default {
       dispatch('filterProducts')
     },
     filterProducts ({ state, commit, rootState, dispatch }: ActionContext<FiltersState, RootState>) {
-      let filteredProducts: any[] = [...rootState.products.products]
+      let filteredProducts: (Iphone|Mac|Watch)[] = [...rootState.products.products]
 
       if (state.searchFilter) {
         const arr = state.searchFilter.split(' ')
-        filteredProducts = filteredProducts.filter((product: any) => {
+        filteredProducts = filteredProducts.filter((product: Iphone | Mac | Watch) => {
           let stringFromProduct = ''
           for (const key in product) {
             if (key !== 'id' &&
               key !== 'countInCart' &&
               key !== 'photo' &&
               key !== 'price') {
-              stringFromProduct += product[key].toString().toLowerCase()
+              stringFromProduct += product[key]!.toString().toLowerCase()
             }
           }
           let result = true
@@ -132,21 +132,21 @@ export default {
         })
       }
 
-      const categories: any = { ...state.categories }
+      const categories: IphoneCategories | MacCategories | WatchCategories = { ...state.categories }
       for (const category in categories) {
         const presentParams: string[] = []
-        categories[category].forEach((param: Paramether) => {
+        categories[category].forEach((param: Parameter) => {
           if (param.checked) {
             presentParams.push(param.name)
           }
         })
         if (presentParams.length) {
-          filteredProducts = filteredProducts.filter((product: any) => presentParams.includes(product[category]))
+          filteredProducts = filteredProducts.filter((product: Iphone | Mac | Watch) => presentParams.includes(product[category]!.toString()))
         }
       }
 
       commit('setFilteredProducts', filteredProducts)
-      if (!state.setupedFromUrl) {
+      if (!state.userMadeChages) {
         dispatch('pagination/setupPagination', null, { root: true })
       } else {
         dispatch('pagination/setupPagination', 1, { root: true })

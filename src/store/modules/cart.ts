@@ -3,6 +3,8 @@ import axios from 'axios'
 import { CartState, RootState } from '@/types/store'
 import { ActionContext } from 'vuex'
 
+const baseUrl = 'https://apple-store-vue3-default-rtdb.firebaseio.com'
+
 export default {
   namespaced: true,
   state: {
@@ -52,7 +54,7 @@ export default {
 
     getCartList ({ commit }: ActionContext<CartState, RootState>) {
       commit('setLoading', true)
-      axios.get('https://apple-store-vue3-default-rtdb.firebaseio.com/cart.json').then(response => {
+      axios.get(`${baseUrl}/cart.json`).then(response => {
         if (!response.data) {
           commit('setProducts', [])
         } else {
@@ -64,14 +66,14 @@ export default {
 
     updateCartList ({ state, commit }: ActionContext<CartState, RootState>) {
       commit('setLoading', true)
-      axios.put('https://apple-store-vue3-default-rtdb.firebaseio.com/cart.json', state.products)
+      axios.put(`${baseUrl}/cart.json`, state.products)
       commit('setLoading', false)
     },
 
     submitOrder ({ commit }: ActionContext<CartState, RootState>) {
       commit('setLoading', true)
       commit('setProducts', [])
-      axios.put('https://apple-store-vue3-default-rtdb.firebaseio.com/cart.json', [])
+      axios.put(`${baseUrl}/cart.json`, [])
       commit('setLoading', false)
     }
   },
