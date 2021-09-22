@@ -50,4 +50,10 @@ export default class SearchFilter extends Vue {
   outline: none;
   border: 1px solid #747474;
 }
+
+@media (max-width: 450px) {
+  .search-input {
+    width: 160px;
+  }
+}
 </style>

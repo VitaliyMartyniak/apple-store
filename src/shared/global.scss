@@ -22,6 +22,11 @@ a {
   text-decoration: none;
 }
 
+input[type='checkbox'] {
+  visibility: hidden;
+  position: absolute;
+}
+
 ul {
   list-style: none;
 }
@@ -36,4 +41,10 @@ img {
   cursor: pointer;
   transition: background-color 0.2s ease-in;
   outline: none;
+}
+
+@media (max-width: 991px) {
+  img {
+    height: 150px;
+  }
 }

@@ -7,8 +7,8 @@
       >
         <i class="fab fa-apple" />
       </router-link>
-<!--      <input class="menu-btn" id="menu-btn" type="checkbox" />-->
-<!--      <label class="menu-icon" for="menu-btn"><span class="nav-icon"></span></label>-->
+      <input class="menu-btn" id="menu-btn" type="checkbox" />
+      <label class="menu-icon" for="menu-btn"><span class="nav-icon"></span></label>
       <section class="header__links">
         <router-link
           :to="{ name: 'Catalog', params: { productType: 'iphone' } }"
@@ -62,6 +62,32 @@ export default class Header extends Vue {
     margin: 0 auto;
     justify-content: space-between;
     position: relative;
+
+    .menu-btn {
+      position: absolute;
+
+      &:checked ~ .header__links {
+        width: 200px;
+        background-color: #e5e5e5;
+        top: 63px;
+        position: absolute;
+        max-height: 400px;
+      }
+
+      &:checked ~ .menu-icon .nav-icon {
+        background-color: transparent;
+      }
+
+      &:checked ~ .menu-icon .nav-icon::before {
+        transform: rotate(-45deg);
+        top: 0;
+      }
+
+      &:checked ~ .menu-icon .nav-icon::after {
+        transform: rotate(45deg);
+        top: 0;
+      }
+    }
   }
 
   &__logo {
@@ -96,6 +122,68 @@ export default class Header extends Vue {
   &__functionals {
     display: flex;
     align-items: center;
+  }
+}
+
+@media (max-width: 767px) {
+  .header {
+
+    &__navbar {
+      width: 90%;
+    }
+
+    .menu-icon {
+      position: relative;
+      cursor: pointer;
+      margin-left: 30px;
+      margin-right: auto;
+
+      .nav-icon {
+        background-color: #333;
+        display: block;
+        height: 2px;
+        width: 18px;
+        position: relative;
+        transition: background .2s ease-out;
+
+        &::before {
+          background-color: #333;
+          content: "";
+          display: block;
+          height: 100%;
+          width: 100%;
+          position: absolute;
+          transition: transform .2s ease-out;
+          top: 5px;
+        }
+
+        &::after {
+          background-color: #333;
+          content: "";
+          display: block;
+          height: 100%;
+          width: 100%;
+          position: absolute;
+          transition: transform .2s ease-out;
+          top: -5px;
+        }
+      }
+    }
+
+    .header__links {
+      max-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+
+      a {
+        width: 100%;
+        display: block;
+        padding: 20px;
+        margin-left: 0;
+        border-radius: 0;
+      }
+    }
   }
 }
 </style>

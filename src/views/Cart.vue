@@ -8,11 +8,9 @@
     >
 
       <div class="item__photo">
-        <img
-          :to="{ name: 'SingleProduct', params: { productType: product.productType, id: product.id } }"
-          :src="require(`@/assets/img/${product.productType}/${product.photo}.jpg`)"
-          :alt='product.model'
-        />
+        <router-link :to="{ name: 'SingleProduct', params: { productType: product.productType, id: product.id } }">
+          <img :src="require(`@/assets/img/${product.productType}/${product.photo}.jpg`)" :alt='product.model'/>
+        </router-link>
       </div>
 
       <div class="item__info" >
@@ -159,5 +157,20 @@ export default class Cart extends Vue {
     background-color: var(--dark-color);
     margin-left: auto;
     padding: 10px;
+  }
+
+  @media (max-width: 575px) {
+    .cart__item {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .item__info {
+      width: 80%;
+    }
+
+    .btn {
+      margin-bottom: 30px;
+    }
   }
 </style>

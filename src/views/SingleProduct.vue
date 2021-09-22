@@ -142,6 +142,15 @@ img {
 }
 
 @media (max-width: 767px) {
+  .item {
+    flex-direction: column;
+    align-items: center;
+
+    &__data {
+      width: 70%;
+    }
+  }
+
   img {
     height: 300px;
   }

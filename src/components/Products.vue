@@ -39,17 +39,29 @@ export default class Products extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '../shared/mixins.scss';
-.products {
-  width: 75%;
-  height: 100%;
-  margin-left: auto;
-  display: flex;
-  flex-wrap: wrap;
-}
+  @import '../shared/mixins.scss';
+  .products {
+    width: 75%;
+    height: 100%;
+    margin-left: auto;
+    display: flex;
+    flex-wrap: wrap;
+  }
 
-.pagination {
-  width: 100%;
-  @include flex-centered;
-}
+  .pagination {
+    width: 100%;
+    @include flex-centered;
+  }
+
+  @media (max-width: 767px) {
+    .products {
+      width: 65%;
+    }
+  }
+
+  @media (max-width: 575px) {
+    .products {
+      width: 55%;
+    }
+  }
 </style>

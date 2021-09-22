@@ -34,52 +34,67 @@ export default class Home extends Vue {
 
 <style lang="scss" scoped>
 @import '../shared/mixins.scss';
-  h1, h2 {
-    text-align: center;
-  }
+h1, h2 {
+  text-align: center;
+}
 
+h1 {
+  margin: 20vh auto 20px;
+}
+
+h2 {
+  margin-bottom: 30px;
+}
+
+.products {
+  display: flex;
+  justify-content: space-around;
+
+  .product__link {
+    @include flex-centered;
+    align-items: flex-end;
+    width: 30%;
+    height: 225px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    font-size: 30px;
+    color: #fff;
+
+    &:hover {
+      box-shadow: 0 0 15px -5px rgba(0,0,0,0.75);
+    }
+
+    &.iphones {
+      background-image: url('../assets/img/backgrounds/iphones-background.jpeg');
+    }
+
+    &.macs {
+      background-image: url('../assets/img/backgrounds/macs-background.jpeg');
+    }
+
+    &.watches {
+      background-image: url('../assets/img/backgrounds/watches-background.jpeg');
+    }
+
+    span {
+      margin-bottom: 20px;
+    }
+  }
+}
+
+@media (max-width: 767px) {
   h1 {
-    margin: 20vh auto 20px;
-  }
-
-  h2 {
-    margin-bottom: 30px;
+    margin: 5vh auto 20px;
   }
 
   .products {
-    display: flex;
-    justify-content: space-around;
+    display: block;
 
     .product__link {
-      @include flex-centered;
-      align-items: flex-end;
-      width: 30%;
-      height: 225px;
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: cover;
-      font-size: 30px;
-      color: #fff;
-
-      &:hover {
-        box-shadow: 0 0 15px -5px rgba(0,0,0,0.75);
-      }
-
-      &.iphones {
-        background-image: url('../assets/img/backgrounds/iphones-background.jpeg');
-      }
-
-      &.macs {
-        background-image: url('../assets/img/backgrounds/macs-background.jpeg');
-      }
-
-      &.watches {
-        background-image: url('../assets/img/backgrounds/watches-background.jpeg');
-      }
-
-      span {
-        margin-bottom: 20px;
-      }
+      width: 100%;
+      margin-bottom: 20px;
     }
   }
+}
 </style>

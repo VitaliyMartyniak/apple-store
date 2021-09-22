@@ -149,4 +149,16 @@ export default class ProductFilters extends Vue {
   input[type='checkbox']:checked ~ .filter__name {
     color: var(--detail-color);
   }
+
+  @media (max-width: 767px) {
+    .filters {
+      width: 33%;
+    }
+  }
+
+  @media (max-width: 575px) {
+    .filters {
+      width: 40%;
+    }
+  }
 </style>

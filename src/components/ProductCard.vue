@@ -104,4 +104,16 @@ export default class ProductCard extends Vue {
       background-color: #2456ff;
     }
   }
+
+  @media (max-width: 767px) {
+    .item {
+      width: 45%;
+    }
+  }
+
+  @media (max-width: 575px) {
+    .item {
+      width: 90%;
+    }
+  }
 </style>
