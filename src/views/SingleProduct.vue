@@ -1,6 +1,6 @@
 <template>
   <div class="item" v-if="product && !isLoading">
-    <div class="item__photo">
+    <div class="item__photo_single">
       <img :src="require(`@/assets/img/${productType}/${product.photo}.jpg`)" alt="{{product.model}}"/>
     </div>
     <div class="item__data">
@@ -94,6 +94,11 @@ export default class SingleProduct extends Vue {
   margin: 0 auto;
   display: flex;
   background-color: var(--light-color);
+
+  &__photo_single {
+    width: 50%;
+    text-align: center;
+  }
 
   &__data {
     width: 40%;
