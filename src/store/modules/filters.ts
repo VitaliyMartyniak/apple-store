@@ -101,7 +101,7 @@ export default {
       let filteredProducts: (Iphone|Mac|Watch)[] = [...rootState.products.products]
 
       if (state.searchFilter) {
-        const arr = state.searchFilter.split(' ')
+        const arrayFromUsersSearch = state.searchFilter.split(' ')
         filteredProducts = filteredProducts.filter((product: Iphone | Mac | Watch) => {
           let stringFromProduct = ''
           for (const key in product) {
@@ -113,8 +113,8 @@ export default {
             }
           }
           let result = true
-          arr.forEach((el: string) => {
-            result = stringFromProduct.includes(el) && result
+          arrayFromUsersSearch.forEach((word: string) => {
+            result = stringFromProduct.includes(word) && result
           })
           return result
         })

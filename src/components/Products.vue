@@ -1,5 +1,5 @@
 <template>
-  <div class='products' v-if="!isLoading">
+  <div class='products' v-if="!isLoading && products">
     <ProductCard
       v-for='product of products'
       :key='product.id'
@@ -10,6 +10,9 @@
     <div class="pagination">
       <ProductsPagination />
     </div>
+  </div>
+  <div class="no-products" v-else>
+    <p>There are no products of your choice</p>
   </div>
 </template>
 
@@ -46,6 +49,10 @@ export default class Products extends Vue {
     margin-left: auto;
     display: flex;
     flex-wrap: wrap;
+  }
+
+  .no-products {
+    margin-left: 20px;
   }
 
   .pagination {
