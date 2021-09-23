@@ -102,6 +102,8 @@ export default class SingleProduct extends Vue {
 
   &__data {
     width: 40%;
+    margin: 0 auto;
+    text-align: center;
   }
 
   &__title {
@@ -161,7 +163,6 @@ img {
   }
 
   .item__data {
-    margin-right: 20px;
     margin-bottom: 30px;
   }
 }
