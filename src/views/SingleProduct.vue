@@ -156,6 +156,10 @@ img {
     &__data {
       width: 70%;
     }
+
+    &__photo_single {
+      width: 100%;
+    }
   }
 
   img {
